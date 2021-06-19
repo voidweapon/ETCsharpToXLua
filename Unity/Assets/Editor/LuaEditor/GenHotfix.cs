@@ -11,10 +11,10 @@ namespace ETEditor
     public static class GenLuaTool
     {
         [MenuItem("Tools/Gen Lua Scripts #S"),]
-        public async static void Geanerate()
+        public  static void Geanerate()
         {
             Log.Debug("=========开始转换C#为lua，请耐心等待=========");
-            await Task.Delay(100);
+ 
             FileHelper.CleanDirectory("Assets/Res/Code");
             GenModel.Gen();
             GenHotfixView.Gen();

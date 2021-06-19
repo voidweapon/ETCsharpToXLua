@@ -9,6 +9,7 @@ namespace ETCold
 {
     public class GameInit : MonoBehaviour
     {
+        public bool isRunLuaMode = true;
         private void Awake()
         {
             try
@@ -16,8 +17,8 @@ namespace ETCold
                 SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
                 DontDestroyOnLoad(gameObject);
                 Application.targetFrameRate = Define.FrameRate;
-                Define.IsEditorMode = true;// GlobalConfigComponent.Instance.GlobalProto.isEditorMode;
-                Define.IsLua = true;// GlobalConfigComponent.Instance.GlobalProto.isLua;
+                Define.IsEditorMode = Application.isEditor;
+                Define.IsLua = isRunLuaMode;
                 HotfixHelper.StartHotfix();
             }
             catch (Exception e)

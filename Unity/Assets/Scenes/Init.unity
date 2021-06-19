@@ -478,6 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9c0667856798d141b73179fe1a62a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isRunLuaMode: 1
 --- !u!4 &575235020
 Transform:
   m_ObjectHideFlags: 0
