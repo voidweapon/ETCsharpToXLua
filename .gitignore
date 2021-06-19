@@ -22,6 +22,7 @@ obj/
 _ReSharper.CSharp/
 *.opensdf
 *.sdf
+*.history
 /CSharp/CSharp.sln.ide
 /Unity/Library
 /Unity/CSharp60Support/compilation log.txt
@@ -49,10 +50,4 @@ Server/.DS_Store
 .objs/
 /Unity/.gradle
 /*.user
-/ToolsApp/
-/Unity/Unity.Editor.csproj
-/Unity/Unity.Hotfix.csproj
-/Unity/Unity.HotfixView.csproj
-/Unity/Unity.Model.csproj
-/Unity/Unity.ModelView.csproj
-/Unity/Unity.ThirdParty.csproj
+Unity/Assets/Res/Code/

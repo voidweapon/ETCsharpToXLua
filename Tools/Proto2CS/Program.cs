@@ -32,17 +32,28 @@ namespace ET
 
         public static void Proto2CS()
         {
-            msgOpcode.Clear();
-            Proto2CS("ET", "../../../Proto/InnerMessage.proto", serverMessagePath, "InnerOpcode", 10000);
-            GenerateOpcode("ET", "InnerOpcode", serverMessagePath);
+            try
+            {
+                msgOpcode.Clear();
+                Proto2CS("ET", "../../../Proto/InnerMessage.proto", serverMessagePath, "InnerOpcode", 10000);
+                GenerateOpcode("ET", "InnerOpcode", serverMessagePath);
             
-            Proto2CS("ET", "../../../Proto/OuterMessage.proto", serverMessagePath, "OuterOpcode", 20000);
-            GenerateOpcode("ET", "OuterOpcode", serverMessagePath);
+                Proto2CS("ET", "../../../Proto/OuterMessage.proto", serverMessagePath, "OuterOpcode", 20000);
+                GenerateOpcode("ET", "OuterOpcode", serverMessagePath);
             
-            Proto2CS("ET", "../../../Proto/OuterMessage.proto", clientMessagePath, "OuterOpcode", 20000);
-            GenerateOpcode("ET", "OuterOpcode", clientMessagePath);
-            
- 
+                Proto2CS("ET", "../../../Proto/OuterMessage.proto", clientMessagePath, "OuterOpcode", 20000);
+                GenerateOpcode("ET", "OuterOpcode", clientMessagePath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+
+            Console.WriteLine("生成Proto成功，请按任意键关闭");
+            Console.ReadKey();
+
         }
 
         public static void Proto2CS(string ns, string protoName, string outputPath, string opcodeClassName, int startOpcode)
@@ -253,13 +264,27 @@ namespace ET
                 int index = newline.IndexOf(";");
                 newline = newline.Remove(index);
                 string[] ss = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
-                string type = ss[0];
-                string name = ss[1];
-                int n = int.Parse(ss[3]);
-                string typeCs = ConvertType(type);
+                if (ss.Length>=5)
+                {
+                    string type = ss[1];
+                    string name = ss[2];
+                    int n = int.Parse(ss[4]);
+                    string typeCs = ConvertType(type);
                 
-                sb.Append($"\t\t[ProtoMember({n})]\n");
-                sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
+                    sb.Append($"\t\t[ProtoMember({n})]\n");
+                    sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
+                }
+                else
+                {
+                    string type = ss[0];
+                    string name = ss[1];
+                    int n = int.Parse(ss[3]);
+                    string typeCs = ConvertType(type);
+                
+                    sb.Append($"\t\t[ProtoMember({n})]\n");
+                    sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
+                }
+                
             }
             catch (Exception e)
             {

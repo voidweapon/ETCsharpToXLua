@@ -1,4 +1,5 @@
 ﻿
+using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 namespace ET
@@ -8,16 +9,18 @@ namespace ET
 	{
 		protected override async ETVoid Run(Session session, M2C_CreateUnits message)
 		{	
-			UnitComponent unitComponent = session.Domain.GetComponent<UnitComponent>();
+			Log.Debug("我收到了 创建Unit的服务器消息");
 			
-			foreach (UnitInfo unitInfo in message.Units)
-			{
-				if (unitComponent.Get(unitInfo.UnitId) != null)
-				{
-					continue;
-				}
-				Unit unit = UnitFactory.Create(session.Domain, unitInfo);
-			}
+			// UnitComponent unitComponent = session.Domain.GetComponent<UnitComponent>();
+			//
+			// foreach (UnitInfo unitInfo in message.Units)
+			// {
+			// 	if (unitComponent.Get(unitInfo.UnitId) != null)
+			// 	{
+			// 		continue;
+			// 	}
+			// 	Unit unit = UnitFactory.Create(session.Domain, unitInfo);
+			// }
 
 			await ETTask.CompletedTask;
 		}

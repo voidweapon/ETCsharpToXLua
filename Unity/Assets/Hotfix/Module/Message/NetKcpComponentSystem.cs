@@ -12,9 +12,10 @@ namespace ET
             self.MessageDispatcher = new OuterMessageDispatcher();
             
             self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Outer);
-            self.Service.ErrorCallback += self.OnError;
-            self.Service.ReadCallback += self.OnRead;
-
+            self.Service.ErrorCallback +=(long id,int errId)=>{NetKcpComponentSystem.OnError(self,id,errId);};
+            self.Service.ReadCallback += (long id,MemoryStream stream)=>{NetKcpComponentSystem.OnRead(self,id,stream);};
+            self.Service.AcceptCallback += (long id,IPEndPoint ip)=>{NetKcpComponentSystem.OnAccept(self,id,ip);};
+            
             NetThreadComponent.Instance.Add(self.Service);
         }
     }
@@ -27,9 +28,10 @@ namespace ET
             self.MessageDispatcher = new OuterMessageDispatcher();
             
             self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Outer);
-            self.Service.ErrorCallback += self.OnError;
-            self.Service.ReadCallback += self.OnRead;
-            self.Service.AcceptCallback += self.OnAccept;
+            
+            self.Service.ErrorCallback +=(long id,int errId)=>{NetKcpComponentSystem.OnError(self,id,errId);};
+            self.Service.ReadCallback += (long id,MemoryStream stream)=>{NetKcpComponentSystem.OnRead(self,id,stream);};
+            self.Service.AcceptCallback += (long id,IPEndPoint ip)=>{NetKcpComponentSystem.OnAccept(self,id,ip);};
 
             NetThreadComponent.Instance.Add(self.Service);
         }

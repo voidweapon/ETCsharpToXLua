@@ -41,7 +41,7 @@ namespace ET
             {
                 string name = bsonReader.ReadName(Utf8NameDecoder.Instance);
 
-                FieldInfo field = actualType.GetField(name,BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                FieldInfo field = actualType.GetField(name);
                 if (field != null)
                 {
                     object value = BsonSerializer.Deserialize(bsonReader, field.FieldType);

@@ -34,7 +34,11 @@ namespace ET
     
     public static class RandomHelper
     {
+#if __CSharpLua__
+        public static Random random = new Random();
+#else
         public static Random random = new Random(Guid.NewGuid().GetHashCode());
+#endif
         
         public static ulong RandUInt64()
         {

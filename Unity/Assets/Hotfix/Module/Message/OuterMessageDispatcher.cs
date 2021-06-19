@@ -1,17 +1,18 @@
 ﻿using System;
 using System.IO;
+using ETCold;
 
 namespace ET
 {
-    public class OuterMessageDispatcher: IMessageDispatcher
+    public class OuterMessageDispatcher : IMessageDispatcher
     {
         // 查找卡死问题临时处理
         public long lastMessageTime = long.MaxValue;
         public object LastMessage;
-        
+
         public void Dispatch(Session session, MemoryStream memoryStream)
         {
-            ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
+            ushort opcode = memoryStream.ToUInt16(Packet.KcpOpcodeIndex);
             Type type = OpcodeTypeComponent.Instance.GetType(opcode);
             object message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
 
@@ -22,7 +23,7 @@ namespace ET
 
             this.lastMessageTime = TimeHelper.ClientFrameTime();
             this.LastMessage = message;
-            
+
             if (message is IResponse response)
             {
                 session.OnRead(opcode, response);

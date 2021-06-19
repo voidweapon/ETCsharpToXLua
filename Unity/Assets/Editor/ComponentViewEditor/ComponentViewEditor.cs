@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace ET
 {
-    [CustomEditor(typeof (ComponentView))]
+    [CustomEditor(typeof (ETCold.ComponentView))]
     public class ComponentViewEditor: Editor
     {
         public override void OnInspectorGUI()
         {
-            ComponentView componentView = (ComponentView) target;
+            ETCold.ComponentView componentView = (ETCold.ComponentView) target;
             object component = componentView.Component;
             ComponentViewHelper.Draw(component);
         }

@@ -28,7 +28,7 @@ namespace ET
 		public Camera MainCamera
 		{
 			get
-			{
+			{ 
 				return this.mainCamera;
 			}
 		}

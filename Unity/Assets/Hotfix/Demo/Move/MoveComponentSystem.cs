@@ -77,7 +77,7 @@ namespace ET
             self.IsTurnHorizontal = true;
             self.TurnTime = turnTime;
             self.Speed = speed;
-            ETTask<bool> tcs = ETTask<bool>.Create(true);
+            ETTask<bool> tcs = ETTask<bool>.Create();
             self.Callback = (ret) => { tcs.SetResult(ret); };
 
             Game.EventSystem.Publish(new EventType.MoveStart(){Unit = self.GetParent<Unit>()}).Coroutine();
@@ -273,7 +273,7 @@ namespace ET
         {
             if (speed < 0.001)
             {
-                Log.Error($"speed is 0 {self.GetParent<Unit>().Config.Id} {self.GetParent<Unit>().Id} {speed}");
+                Log.Error($"speed is 0 {self.GetParent<Unit>().ConfigId} {self.GetParent<Unit>().Id} {speed}");
                 return false;
             }
 
@@ -298,7 +298,7 @@ namespace ET
 
             if (Math.Abs(speed) < 0.001)
             {
-                Log.Error($"speed is 0 {self.GetParent<Unit>().Config.Id} {self.GetParent<Unit>().Id}");
+                Log.Error($"speed is 0 {self.GetParent<Unit>().ConfigId} {self.GetParent<Unit>().Id}");
                 return false;
             }
 

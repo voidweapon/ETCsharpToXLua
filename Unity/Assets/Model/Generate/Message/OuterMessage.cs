@@ -178,6 +178,18 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.C2M_StopTest)]
+	[ProtoContract]
+	public partial class C2M_StopTest: Object, IActorLocationMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
+	}
+
 	[Message(OuterOpcode.M2C_PathfindingResult)]
 	[ProtoContract]
 	public partial class M2C_PathfindingResult: Object, IActorMessage
@@ -426,6 +438,15 @@ namespace ET
 	[Message(OuterOpcode.PlayerInfo)]
 	[ProtoContract]
 	public partial class PlayerInfo: Object, IMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.PlayerInfoTest)]
+	[ProtoContract]
+	public partial class PlayerInfoTest: Object, IMessage
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }

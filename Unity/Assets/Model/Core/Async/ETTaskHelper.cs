@@ -52,16 +52,16 @@ namespace ET
 
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(2);
 
-            foreach (ETTask<T> task in tasks)
-            {
-                RunOneTask(task).Coroutine();
-            }
-
             async ETVoid RunOneTask(ETTask<T> task)
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
+            foreach (ETTask<T> task in tasks)
+            {
+                RunOneTask(task).Coroutine();
+            }
+
 
             await coroutineBlocker.WaitAsync();
 
@@ -82,16 +82,16 @@ namespace ET
 
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(2);
 
-            foreach (ETTask task in tasks)
-            {
-                RunOneTask(task).Coroutine();
-            }
-
             async ETVoid RunOneTask(ETTask task)
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
+            foreach (ETTask task in tasks)
+            {
+                RunOneTask(task).Coroutine();
+            }
+
 
             await coroutineBlocker.WaitAsync();
 
@@ -112,16 +112,16 @@ namespace ET
 
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Length + 1);
 
-            foreach (ETTask<T> task in tasks)
-            {
-                RunOneTask(task).Coroutine();
-            }
-
             async ETVoid RunOneTask(ETTask<T> task)
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
+            foreach (ETTask<T> task in tasks)
+            {
+                RunOneTask(task).Coroutine();
+            }
+
 
             await coroutineBlocker.WaitAsync();
 
@@ -142,16 +142,16 @@ namespace ET
 
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Count + 1);
 
-            foreach (ETTask<T> task in tasks)
-            {
-                RunOneTask(task).Coroutine();
-            }
-
             async ETVoid RunOneTask(ETTask<T> task)
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
+            foreach (ETTask<T> task in tasks)
+            {
+                RunOneTask(task).Coroutine();
+            }
+
 
             await coroutineBlocker.WaitAsync();
 
@@ -172,6 +172,11 @@ namespace ET
 
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Length + 1);
 
+            async ETVoid RunOneTask(ETTask task)
+            {
+                await task;
+                await coroutineBlocker.WaitAsync();
+            }
             foreach (ETTask task in tasks)
             {
                 RunOneTask(task).Coroutine();
@@ -179,11 +184,6 @@ namespace ET
 
             await coroutineBlocker.WaitAsync();
 
-            async ETVoid RunOneTask(ETTask task)
-            {
-                await task;
-                await coroutineBlocker.WaitAsync();
-            }
 
             if (cancellationToken == null)
             {
@@ -202,6 +202,11 @@ namespace ET
 
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Count + 1);
 
+            async ETVoid RunOneTask(ETTask task)
+            {
+                await task;
+                await coroutineBlocker.WaitAsync();
+            }
             foreach (ETTask task in tasks)
             {
                 RunOneTask(task).Coroutine();
@@ -209,11 +214,6 @@ namespace ET
 
             await coroutineBlocker.WaitAsync();
 
-            async ETVoid RunOneTask(ETTask task)
-            {
-                await task;
-                await coroutineBlocker.WaitAsync();
-            }
 
             if (cancellationToken == null)
             {

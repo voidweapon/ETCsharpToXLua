@@ -1,9 +1,13 @@
 ﻿using System;
+#if !__CSharpLua__
 using System.Runtime.InteropServices;
+#endif
 
 namespace ET
 {
+#if !__CSharpLua__
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
+#endif
     public struct IdStruct
     {
         public uint Time;    // 30bit
@@ -42,7 +46,9 @@ namespace ET
         }
     }
 
+#if !__CSharpLua__
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    #endif
     public struct InstanceIdStruct
     {
         public uint Time;   // 当年开始的tick 28bit
@@ -89,7 +95,9 @@ namespace ET
         }
     }
     
+#if !__CSharpLua__
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    #endif
     public struct UnitIdStruct
     {
         public uint Time;        // 30bit 34年

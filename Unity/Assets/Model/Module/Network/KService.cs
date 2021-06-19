@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using ETCold;
 
 namespace ET
 {
@@ -451,7 +452,7 @@ namespace ET
                 }
 
                 byte[] buffer = this.cache;
-                buffer.WriteTo(0, KcpProtocalType.FIN);
+                buffer.WriteByteTo(0, KcpProtocalType.FIN);
                 buffer.WriteTo(1, localConn);
                 buffer.WriteTo(5, remoteConn);
                 buffer.WriteTo(9, (uint) error);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ETCold;
 using MongoDB.Bson.IO;
 
 namespace ET
@@ -74,7 +75,8 @@ namespace ET
             stream.Seek(Packet.OpcodeLength, SeekOrigin.Begin);
             stream.SetLength(Packet.OpcodeLength);
             
-            stream.GetBuffer().WriteTo(0, opcode);
+            StreamHelper.WriteToUshort(stream,0,opcode);
+            // stream.GetBuffer().WriteUShortTo(0, opcode);
             
             MessageSerializeHelper.SerializeTo(opcode, message, stream);
             
@@ -93,8 +95,8 @@ namespace ET
             stream.SetLength(actorSize + Packet.OpcodeLength);
 
             // 写入actorId
-            stream.GetBuffer().WriteTo(0, actorId);
-            stream.GetBuffer().WriteTo(actorSize, opcode);
+            stream.GetBuffer().WriteLongTo(0, actorId);
+            stream.GetBuffer().WriteUShortTo(actorSize, opcode);
             
             MessageSerializeHelper.SerializeTo(opcode, message, stream);
             

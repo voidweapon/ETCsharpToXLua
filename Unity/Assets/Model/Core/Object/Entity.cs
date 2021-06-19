@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !__CSharpLua__
 using System.Runtime.Serialization;
+#endif
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 #if !SERVER
@@ -21,16 +23,24 @@ namespace ET
 
     public partial class Entity: Object
     {
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         private static readonly Pool<HashSet<Entity>> hashSetPool = new Pool<HashSet<Entity>>();
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         private static readonly Pool<Dictionary<Type, Entity>> dictPool = new Pool<Dictionary<Type, Entity>>();
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         private static readonly Pool<Dictionary<long, Entity>> childrenPool = new Pool<Dictionary<long, Entity>>();
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public long InstanceId
         {
@@ -42,11 +52,15 @@ namespace ET
         {
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         private EntityStatus status = EntityStatus.None;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public bool IsFromPool
         {
@@ -64,7 +78,9 @@ namespace ET
             }
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public bool IsRegister
         {
@@ -89,7 +105,9 @@ namespace ET
             }
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         private bool IsComponent
         {
@@ -107,7 +125,9 @@ namespace ET
             }
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public bool IsCreate
         {
@@ -125,15 +145,21 @@ namespace ET
             }
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public bool IsDisposed => this.InstanceId == 0;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         protected Entity parent;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public Entity Parent
         {
@@ -173,7 +199,9 @@ namespace ET
             }
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         // 该方法只能在AddComponent中调用，其他人不允许调用
         [BsonIgnore]
         private Entity ComponentParent
@@ -220,11 +248,15 @@ namespace ET
             set;
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         protected Entity domain;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public Entity Domain
         {
@@ -303,16 +335,22 @@ namespace ET
             }
         }
 
-		[IgnoreDataMember]
+		#if !__CSharpLua__
+        [IgnoreDataMember]
+        #endif
         [BsonElement("Children")]
         [BsonIgnoreIfNull]
         private HashSet<Entity> childrenDB;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         private Dictionary<long, Entity> children;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public Dictionary<long, Entity> Children => this.children ?? (this.children = childrenPool.Fetch());
 
@@ -379,16 +417,22 @@ namespace ET
             }
         }
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonElement("C")]
         [BsonIgnoreIfNull]
         private HashSet<Entity> componentsDB;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         private Dictionary<Type, Entity> components;
 
+        #if !__CSharpLua__
         [IgnoreDataMember]
+        #endif
         [BsonIgnore]
         public Dictionary<Type, Entity> Components => this.components ?? (this.components = dictPool.Fetch());
 

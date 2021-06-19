@@ -7,11 +7,12 @@ namespace ET
     {
         public override void Awake(UILobbyComponent self)
         {
-            ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
+            ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent(typeof(ReferenceCollector)) as ReferenceCollector;
 			
-            self.enterMap = rc.Get<GameObject>("EnterMap");
-            self.enterMap.GetComponent<Button>().onClick.AddListener(self.EnterMap);
-            self.text = rc.Get<GameObject>("Text").GetComponent<Text>();
+            self.enterMap = (GameObject) rc.GetObject("EnterMap");
+            Button enterMapButton = (self.enterMap.GetComponent( typeof(Button)) as Button);
+            enterMapButton.onClick.AddListener(()=> { /*self.EnterMap();*/ });
+            self.text = (rc.GetObject("Text") as GameObject).GetComponent(typeof(Text)) as Text;
         }
     }
     

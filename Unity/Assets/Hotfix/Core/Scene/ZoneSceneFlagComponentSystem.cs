@@ -7,7 +7,7 @@
         {
             ZoneSceneManagerComponent.Instance.Remove(self.DomainZone());
         }
-    }
+    } 
 
     [ObjectSystem]
     public class ZoneSceneFlagComponentAwakeSystem: AwakeSystem<ZoneSceneFlagComponent>

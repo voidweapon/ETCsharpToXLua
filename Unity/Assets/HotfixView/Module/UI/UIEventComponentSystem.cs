@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ETCold;
 using UnityEngine;
 
 namespace ET
@@ -11,13 +12,13 @@ namespace ET
 			UIEventComponent.Instance = self;
 			
 			GameObject uiRoot = GameObject.Find("/Global/UI");
-			ReferenceCollector referenceCollector = uiRoot.GetComponent<ReferenceCollector>();
+			ReferenceCollector referenceCollector = uiRoot.GetComponent(typeof(ReferenceCollector)) as ReferenceCollector;
 			
-			self.UILayers.Add((int)UILayer.Hidden, referenceCollector.Get<GameObject>(UILayer.Hidden.ToString()).transform);
-			self.UILayers.Add((int)UILayer.Low, referenceCollector.Get<GameObject>(UILayer.Low.ToString()).transform);
-			self.UILayers.Add((int)UILayer.Mid, referenceCollector.Get<GameObject>(UILayer.Mid.ToString()).transform);
-			self.UILayers.Add((int)UILayer.High, referenceCollector.Get<GameObject>(UILayer.High.ToString()).transform);
-
+			self.UILayers.Add((int)UILayer.Hidden, (referenceCollector.GetObject("Hidden") as GameObject).transform);
+			self.UILayers.Add((int)UILayer.Low, (referenceCollector.GetObject("Low") as GameObject).transform);
+			self.UILayers.Add((int)UILayer.Mid, (referenceCollector.GetObject("Mid") as GameObject).transform);
+			self.UILayers.Add((int)UILayer.High, (referenceCollector.GetObject("High") as GameObject).transform);
+			
 			var uiEvents = Game.EventSystem.GetTypes(typeof (UIEventAttribute));
 			foreach (Type type in uiEvents)
 			{
@@ -26,7 +27,7 @@ namespace ET
 				{
 					continue;
 				}
-
+			
 				UIEventAttribute uiEventAttribute = attrs[0] as UIEventAttribute;
 				AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
 				self.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
@@ -44,7 +45,7 @@ namespace ET
 			try
 			{
 				UI ui = await self.UIEvents[uiType].OnCreate(uiComponent);
-				UILayer uiLayer = ui.GameObject.GetComponent<UILayerScript>().UILayer;
+				UILayer uiLayer = (ui.GameObject.GetComponent(typeof(UILayerScript)) as UILayerScript).UILayer;
 				ui.GameObject.transform.SetParent(self.UILayers[(int)uiLayer]);
 				return ui;
 			}

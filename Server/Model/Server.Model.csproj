@@ -22,8 +22,88 @@
   </PropertyGroup>
   <ItemGroup>
 
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\AsyncETTaskCompletedMethodBuilder.cs">
+      <Link>Core\Async\AsyncETTaskCompletedMethodBuilder.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\AsyncETTaskMethodBuilder.cs">
+      <Link>Core\Async\AsyncETTaskMethodBuilder.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\AsyncETVoidMethodBuilder.cs">
+      <Link>Core\Async\AsyncETVoidMethodBuilder.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\AsyncMethodBuilderAttribute.cs">
+      <Link>Core\Async\AsyncMethodBuilderAttribute.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\ETTask.cs">
+      <Link>Core\Async\ETTask.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\ETTaskCompleted.cs">
+      <Link>Core\Async\ETTaskCompleted.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\ETVoid.cs">
+      <Link>Core\Async\ETVoid.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Async\IAwaiter.cs">
+      <Link>Core\Async\IAwaiter.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Helper\ByteHelper.cs">
+      <Link>Core\Helper\ByteHelper.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Helper\JsonHelper.cs">
+      <Link>Core\Helper\JsonHelper.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Helper\StreamHelper.cs">
+      <Link>Core\Helper\StreamHelper.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Log\FileLogger.cs">
+      <Link>Core\Log\FileLogger.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Log\ILog.cs">
+      <Link>Core\Log\ILog.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Log\NLogger.cs">
+      <Link>Core\Log\NLogger.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Log\UnityLogger.cs">
+      <Link>Core\Log\UnityLogger.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\Object\Object.cs">
+      <Link>Core\Object\Object.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Core\ThreadSynchronizationContext.cs">
+      <Link>Core\Entity\ThreadSynchronizationContext.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Module\Network\Circularbuffer.cs">
+      <Link>Module\NetworkTCP\Circularbuffer.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Cold\ET\Module\Network\Kcp.cs">
+      <Link>Module\Network\Kcp.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
       <Link>Base\MongoHelper.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Base\Options.cs">
+      <Link>Core\Entity\Options.cs</Link>
     </Compile>
 
     <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs"> 
@@ -64,6 +144,9 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageDispatcherComponent.cs">
       <Link>Module\Message\MessageDispatcherComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\ProtobufHelper.cs">
+      <Link>Core\Helper\ProtobufHelper.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

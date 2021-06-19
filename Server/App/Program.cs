@@ -16,9 +16,9 @@ namespace ET
 			
 			try
 			{		
-				Game.EventSystem.Add(typeof(Game).Assembly);
-				Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
-				
+				Game.EventSystem.AddRangeType(typeof(Game).Assembly.GetTypes());
+				Game.EventSystem.AddRangeType(DllHelper.GetHotfixAssembly().GetTypes());
+				Game.EventSystem.Init();
 				ProtobufHelper.Init();
 				MongoHelper.Init();
 				

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using ETCold;
 
 namespace ET
 {
@@ -24,6 +25,6 @@ namespace ET
         public bool isRun;
 #endif
         
-        public Random Random = new Random(Guid.NewGuid().GetHashCode());
+        public Random Random = new Random();
     }
 }

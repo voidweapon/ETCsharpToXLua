@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ETCold;
 
 namespace ET
 {
@@ -15,15 +16,17 @@ namespace ET
 		private int packetSize;
 		private ParserState state;
 		public AService service;
-		private readonly byte[] cache = new byte[8];
+		// private readonly byte[] cache = new byte[8];
 		public const int InnerPacketSizeLength = 4;
 		public const int OuterPacketSizeLength = 2;
 		public MemoryStream MemoryStream;
+		public MemoryStream cacheMemoryStream;
 
 		public PacketParser(CircularBuffer buffer, AService service)
 		{
 			this.buffer = buffer;
 			this.service = service;
+			cacheMemoryStream = new MemoryStream(8);
 		}
 
 		public bool Parse()
@@ -41,9 +44,10 @@ namespace ET
 								return false;
 							}
 
-							this.buffer.Read(this.cache, 0, InnerPacketSizeLength);
-
-							this.packetSize = BitConverter.ToInt32(this.cache, 0);
+							
+							cacheMemoryStream.Position = 0;
+							this.buffer.Read(cacheMemoryStream, InnerPacketSizeLength);
+							this.packetSize = this.cacheMemoryStream.ToInt32(0);
 							if (this.packetSize > ushort.MaxValue * 16 || this.packetSize < Packet.MinPacketSize)
 							{
 								throw new Exception($"recv packet size error, 可能是外网探测端口: {this.packetSize}");
@@ -55,10 +59,10 @@ namespace ET
 							{
 								return false;
 							}
-
-							this.buffer.Read(this.cache, 0, OuterPacketSizeLength);
-
-							this.packetSize = BitConverter.ToUInt16(this.cache, 0);
+							
+							cacheMemoryStream.Position = 0;
+							this.buffer.Read(cacheMemoryStream, OuterPacketSizeLength);
+							this.packetSize = this.cacheMemoryStream.ToUInt16(0);
 							if (this.packetSize < Packet.MinPacketSize)
 							{
 								throw new Exception($"recv packet size error, 可能是外网探测端口: {this.packetSize}");

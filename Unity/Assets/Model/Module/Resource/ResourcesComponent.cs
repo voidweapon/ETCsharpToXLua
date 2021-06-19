@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
 
+#if UNITY_EDITOR
+using ETCold;
+using UnityEditor;
 #endif
 
 namespace ET
@@ -185,20 +187,26 @@ namespace ET
         private string[] GetDependencies(string assetBundleName)
         {
             string[] dependencies = new string[0];
+            
             if (DependenciesCache.TryGetValue(assetBundleName, out dependencies))
             {
                 return dependencies;
             }
-
+            
             if (!Define.IsAsync)
             {
-#if UNITY_EDITOR
-                dependencies = AssetDatabase.GetAssetBundleDependencies(assetBundleName, true);
-#endif
+                List<string> dependenciesList = new List<string>();
+                int count     = ETCold.LoadHelper.GetAssetBundleDependenciesCount(assetBundleName, true );
+                Array userDat =  ETCold.LoadHelper.GetAssetBundleDependencies(assetBundleName, true );
+                for (int i = 0; i < count; i++)
+                {
+                    dependenciesList.Add((string)userDat.GetValue(count));
+                }
+                dependencies = dependenciesList.ToArray();
             }
             else
             {
-                dependencies = this.AssetBundleManifestObject.GetAllDependencies(assetBundleName);
+                dependencies  = this.AssetBundleManifestObject.GetAllDependencies(assetBundleName);
             }
 
             DependenciesCache.Add(assetBundleName, dependencies);
@@ -210,7 +218,37 @@ namespace ET
             var info = new Dictionary<string, int>();
             var parents = new List<string>();
             CollectDependencies(parents, assetBundleName, info);
-            string[] ss = info.OrderBy(x => x.Value).Select(x => x.Key).ToArray();
+            
+            List<string> keysResultArr = new List<string>();
+            List<string> keysArr = info.Keys.ToList();
+            List<int> ValuesArr  = info.Values.ToList();
+            List<int> indexSet = new List<int>();
+            int i = 0;
+            while (i <  ValuesArr.Count)
+            {
+                int minIndex = 0;
+                int minValue = ValuesArr[0];
+                for (int j = 0; j < ValuesArr.Count; j++)
+                {
+                    if (indexSet.Contains(j))
+                    {
+                        continue;
+                    }
+
+                    if ( ValuesArr[j] < minValue )
+                    {
+                        minIndex = j;
+                    }
+                }
+                indexSet.Add(minIndex);
+                ++i;
+            }
+
+            for (int j = 0; j < indexSet.Count; j++)
+            {
+                keysResultArr.Add(keysArr[indexSet[j]]);
+            }
+            string[] ss = keysResultArr.ToArray();
             return ss;
         }
 
@@ -220,11 +258,12 @@ namespace ET
             string[] deps = GetDependencies(assetBundleName);
             foreach (string parent in parents)
             {
+              
                 if (!info.ContainsKey(parent))
                 {
                     info[parent] = 0;
                 }
-
+                
                 info[parent] += deps.Length;
             }
 
@@ -251,13 +290,12 @@ namespace ET
 
         public Dictionary<string, UnityEngine.Object> GetBundleAll(string bundleName)
         {
-            Dictionary<string, UnityEngine.Object> dict;
-            if (!this.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
+           
+            if (!this.resourceCache.ContainsKey(bundleName.BundleNameToLower()))
             {
                 throw new Exception($"not found asset: {bundleName}");
             }
-
-            return dict;
+            return this.resourceCache[bundleName.BundleNameToLower()];
         }
 
         public UnityEngine.Object GetAsset(string bundleName, string prefab)
@@ -346,18 +384,20 @@ namespace ET
             assetBundleName = assetBundleName.ToLower();
 
             string[] dependencies = GetSortedDependencies(assetBundleName);
-            //Log.Debug($"-----------dep load start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
-            foreach (string dependency in dependencies)
+
+            for (int i = 0; i < dependencies.Length; i++)
             {
-                if (string.IsNullOrEmpty(dependency))
+                if (string.IsNullOrEmpty(dependencies[i]))
                 {
                     continue;
                 }
 
-                this.LoadOneBundle(dependency);
+                this.LoadOneBundle(dependencies[i]);
             }
+            
+            
+      
 
-            //Log.Debug($"-----------dep load finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
         }
 
         private void AddResource(string bundleName, string assetName, UnityEngine.Object resource)
@@ -385,31 +425,35 @@ namespace ET
 
             if (!Define.IsAsync)
             {
-                
-#if UNITY_EDITOR
-				string[] realPath = null;
-                realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
-                foreach (string s in realPath)
+                if (Application.isEditor)
                 {
-                    string assetName = Path.GetFileNameWithoutExtension(s);
-                    UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
-                    AddResource(assetBundleName, assetName, resource);
-                }
+                    //string[] realPath = null;
 
-                if (realPath.Length > 0)
-                {
-                    abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
-                    this.bundles[assetBundleName] = abInfo;
-                    //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
+                    int length = ETCold.LoadHelper.GetAssetPathsFromAssetBundleCount(assetBundleName);
+                    Array realPathArr = ETCold.LoadHelper.GetAssetPathsFromAssetBundle(assetBundleName);
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        string s = (string)realPathArr.GetValue(i);
+                        Log.Debug(s);
+                        string assetName = Path.GetFileNameWithoutExtension(s);
+                        UnityEngine.Object resource = ETCold.LoadHelper.LoadAssetAtPath(s); // AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
+                        AddResource(assetBundleName, assetName, resource);
+                    }
+                    
+                    if (length > 0)
+                    {
+                        abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
+                        this.bundles[assetBundleName] = abInfo;
+                        //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
+                    }
+                    else
+                    {
+                        Log.Error($"assets bundle not found: {assetBundleName}");
+                    }
                 }
-                else
-                {
-                    Log.Error($"assets bundle not found: {assetBundleName}");
-                }
-#endif
                 return;
             }
-
             string p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
             AssetBundle assetBundle = null;
             if (File.Exists(p))

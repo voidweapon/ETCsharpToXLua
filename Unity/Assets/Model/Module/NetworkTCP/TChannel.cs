@@ -2,6 +2,8 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using ETCold;
 
 namespace ET
 {
@@ -33,7 +35,7 @@ namespace ET
 				case SocketAsyncOperation.Connect:
 					this.Service.ThreadSynchronizationContext.Post(()=>OnConnectComplete(e));
 					break;
-				case SocketAsyncOperation.Receive:
+				case SocketAsyncOperation.Receive: 
 					this.Service.ThreadSynchronizationContext.Post(()=>OnRecvComplete(e));
 					break;
 				case SocketAsyncOperation.Send:
@@ -133,7 +135,7 @@ namespace ET
 					this.sendBuffer.Write(this.sendCache, 0, PacketParser.InnerPacketSizeLength);
 
 					// actorId
-					stream.GetBuffer().WriteTo(0, actorId);
+					stream.GetBuffer().WriteLongTo(0, actorId);
 					this.sendBuffer.Write(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length - stream.Position));
 					break;
 				}
@@ -141,10 +143,19 @@ namespace ET
 				{
 					ushort messageSize = (ushort) (stream.Length - stream.Position);
 
-					this.sendCache.WriteTo(0, messageSize);
+					#if __CSharpLua__
+					/*
+					  [[
+						 this.sendBuffer:WriteUshort(messageSize)
+						 this.sendBuffer:Write(stream)
+					  ]]
+					 */
+					#else
+					this.sendCache.WriteUShortTo(0, messageSize);   
 					this.sendBuffer.Write(this.sendCache, 0, PacketParser.OuterPacketSizeLength);
-					
 					this.sendBuffer.Write(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length - stream.Position));
+					#endif 
+					 
 					break;
 				}
 			}
@@ -166,7 +177,6 @@ namespace ET
 			}
 			OnConnectComplete(this.outArgs);
 		}
-
 		private void OnConnectComplete(object o)
 		{
 			if (this.socket == null)
@@ -252,8 +262,11 @@ namespace ET
 				this.OnError(ErrorCode.ERR_PeerDisconnect);
 				return;
 			}
-
-			this.recvBuffer.LastIndex += e.BytesTransferred;
+			#if __CSharpLua__
+			this.recvBuffer.Write( e.Buffer, e.Offset, e.BytesTransferred);
+			#else
+			this.recvBuffer.LastIndex += e.BytesTransferred; 
+			#endif
 			if (this.recvBuffer.LastIndex == this.recvBuffer.ChunkSize)
 			{
 				this.recvBuffer.AddLast();

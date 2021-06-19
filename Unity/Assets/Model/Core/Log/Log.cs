@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using ETCold;
 
 #if NOT_CLIENT
 using NLog;
@@ -48,6 +49,13 @@ namespace ET
             }
             DebugCallback?.Invoke(msg, null);
             StackTrace st = new StackTrace(1, true);
+#if __CSharpLua__
+            /*
+			[[local info = debug.getinfo(2,"Sl");
+            msg = msg.."\r\n"..info.source..":"..info.currentline;
+            ]]
+            */
+#endif
             ILog.Trace($"{msg}\n{st}");
         }
 
@@ -58,6 +66,13 @@ namespace ET
                 return;
             }
             DebugCallback?.Invoke(msg, null);
+#if __CSharpLua__
+            /*
+			[[local info = debug.getinfo(2,"Sl");
+            msg = msg.."\r\n"..info.source..":"..info.currentline;
+            ]]
+            */
+#endif
             ILog.Debug(msg);
         }
 
@@ -67,6 +82,13 @@ namespace ET
             {
                 return;
             }
+#if __CSharpLua__
+            /*
+			[[local info = debug.getinfo(2,"Sl");
+            msg = msg.."\r\n"..info.source..":"..info.currentline;
+            ]]
+            */
+#endif
             ILog.Info(msg);
         }
 
@@ -77,6 +99,13 @@ namespace ET
                 return;
             }
             StackTrace st = new StackTrace(1, true);
+#if __CSharpLua__
+            /*
+			[[local info = debug.getinfo(2,"Sl");
+            msg = msg.."\r\n"..info.source..":"..info.currentline;
+            ]]
+            */
+#endif
             ILog.Trace($"{msg}\n{st}");
         }
 
@@ -87,21 +116,45 @@ namespace ET
                 return;
             }
 
+#if __CSharpLua__
+            /*
+			[[local info = debug.getinfo(2,"Sl");
+            msg = msg.."\r\n"..info.source..":"..info.currentline;
+            ]]
+            */
+#endif
             ILog.Warning(msg);
         }
 
         public static void Error(string msg)
         {
+#if __CSharpLua__
+            ErrorCallback?.Invoke($"{msg}");
+            /*
+			[[local info = debug.getinfo(2,"Sl");
+            msg = msg.."\r\n"..info.source..":"..info.currentline;
+            ]]
+            */
+            ILog.Error($"{msg}");
+            #else
             StackTrace st = new StackTrace(1, true);
             ErrorCallback?.Invoke($"{msg}\n{st}");
             ILog.Error($"{msg}\n{st}");
+#endif
         }
 
         public static void Error(Exception e)
         {
-            string str = e.ToString();
-            ErrorCallback?.Invoke(str);
-            ILog.Error(str);
+            string msg = e.ToString();
+            ErrorCallback?.Invoke(msg);
+#if __CSharpLua__
+            /*
+			[[local info = debug.getinfo(2,"Sl");
+            msg = msg.."\r\n"..info.source..":"..info.currentline;
+            ]]
+            */
+#endif
+            ILog.Error(msg);
         }
 
         public static void Trace(string message, params object[] args)

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using ETCold;
 using UnityEngine;
 
 namespace ET
@@ -25,7 +25,8 @@ namespace ET
 		public void Awake(string name, GameObject gameObject)
 		{
 			this.nameChildren.Clear();
-			gameObject.AddComponent<ComponentView>().Component = this;
+			ETCold.ComponentView componentView = gameObject.AddComponent(typeof(ETCold.ComponentView)) as  ComponentView;
+			componentView.Component = this;
 			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
 			this.Name = name;
 			this.GameObject = gameObject;

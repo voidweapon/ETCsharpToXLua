@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿﻿using System;
+ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+ using ETCold;
 
-namespace ET
+ namespace ET
 {
 	public struct KcpWaitPacket
 	{
@@ -21,7 +21,7 @@ namespace ET
 		// 保存所有的channel
 		public static readonly Dictionary<uint, KChannel> kChannels = new Dictionary<uint, KChannel>();
 		
-		public static readonly ConcurrentDictionary<long, ulong> idLocalRemoteConn = new ConcurrentDictionary<long, ulong>();
+		public static readonly Dictionary<long, ulong> idLocalRemoteConn = new  Dictionary<long, ulong>();
 		
 		private Socket socket;
 
@@ -137,7 +137,8 @@ namespace ET
 			Log.Info($"channel dispose: {this.Id} {localConn} {remoteConn}");
 			
 			kChannels.Remove(localConn);
-			idLocalRemoteConn.TryRemove(this.Id, out ulong _);
+			idLocalRemoteConn.Remove(this.Id);
+			// idLocalRemoteConn.TryRemove(this.Id, out ulong _);
 			
 			long id = this.Id;
 			this.Id = 0;
@@ -174,7 +175,8 @@ namespace ET
 			this.InitKcp();
 
 			ulong localRmoteConn = ((ulong) this.RemoteConn << 32) | this.LocalConn;
-			idLocalRemoteConn.TryAdd(this.Id, localRmoteConn);
+			idLocalRemoteConn[this.Id]= localRmoteConn;
+			// idLocalRemoteConn.TryAdd(this.Id, localRmoteConn);
 
 			Log.Info($"channel connected: {this.Id} {this.LocalConn} {this.RemoteConn} {this.RemoteAddress}");
 			this.IsConnected = true;
@@ -204,7 +206,7 @@ namespace ET
 				this.lastRecvTime = timeNow;
 				
 				byte[] buffer = sendCache;
-				buffer.WriteTo(0, KcpProtocalType.SYN);
+				buffer.WriteByteTo(0, KcpProtocalType.SYN);
 				buffer.WriteTo(1, this.LocalConn);
 				buffer.WriteTo(5, this.RemoteConn);
 				this.socket.SendTo(buffer, 0, 9, SocketFlags.None, this.RemoteAddress);
@@ -341,7 +343,7 @@ namespace ET
 				}
 
 				byte[] buffer = this.sendCache;
-				buffer.WriteTo(0, KcpProtocalType.MSG);
+				buffer.WriteByteTo(0, KcpProtocalType.MSG);
 				// 每个消息头部写下该channel的id;
 				buffer.WriteTo(1, this.LocalConn);
 				Marshal.Copy(bytes, buffer, 5, count);
@@ -364,7 +366,7 @@ namespace ET
 			MemoryStream memoryStream = kcpWaitPacket.MemoryStream;
 			if (this.Service.ServiceType == ServiceType.Inner)
 			{
-				memoryStream.GetBuffer().WriteTo(0, kcpWaitPacket.ActorId);
+				memoryStream.GetBuffer().WriteLongTo(0, kcpWaitPacket.ActorId);
 			}
 
 			int count = (int) (memoryStream.Length - memoryStream.Position);

@@ -1,3 +1,5 @@
+using System;
+
 namespace ET
 {
     [ObjectSystem]
@@ -5,7 +7,17 @@ namespace ET
     {
         public override void Awake(SessionIdleCheckerComponent self, int checkInteral)
         {
-            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(checkInteral, self.Check);
+            Action check = null;
+#if __CSharpLua__
+            /*
+             [[
+             check = AIComponentSystem.Check
+             ]]
+             */
+#else
+            check = self.Check;
+#endif
+            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(checkInteral, check);
         }
     }
 
