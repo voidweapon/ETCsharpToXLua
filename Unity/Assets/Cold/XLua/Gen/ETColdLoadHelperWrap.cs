@@ -38,13 +38,15 @@ namespace XLua.CSObjectWrap
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
 
-		    Utils.BeginClassRegister(type, L, __CreateInstance, 7, 0, 0);
+		    Utils.BeginClassRegister(type, L, __CreateInstance, 9, 0, 0);
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "LoadTextAsset", _m_LoadTextAsset_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "LoadAssetAtPath", _m_LoadAssetAtPath_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetAssetPathsFromAssetBundleCount", _m_GetAssetPathsFromAssetBundleCount_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetAssetPathsFromAssetBundle", _m_GetAssetPathsFromAssetBundle_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetAssetBundleDependenciesCount", _m_GetAssetBundleDependenciesCount_xlua_st_);
             Utils.RegisterFunc(L, Utils.CLS_IDX, "GetAssetBundleDependencies", _m_GetAssetBundleDependencies_xlua_st_);
+            Utils.RegisterFunc(L, Utils.CLS_IDX, "GetanimationClipsLength", _m_GetanimationClipsLength);
+            Utils.RegisterFunc(L, Utils.CLS_IDX, "GetAnimatorControllerParameterLength", _m_GetAnimatorControllerParameterLength);
             
             
 			
@@ -234,6 +236,62 @@ namespace XLua.CSObjectWrap
                         _assetBundleName, 
                         _recursive );
                         translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetanimationClipsLength(RealStatePtr L)
+        {
+		    try {
+			
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+            
+                
+                {
+                    UnityEngine.Animator _self = (UnityEngine.Animator)translator.GetObject(L, 1, typeof(UnityEngine.Animator));
+                    
+                        int gen_ret = ETCold.LoadHelper.GetanimationClipsLength( 
+                        _self );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetAnimatorControllerParameterLength(RealStatePtr L)
+        {
+		    try {
+			
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+            
+                
+                {
+                    UnityEngine.Animator _self = (UnityEngine.Animator)translator.GetObject(L, 1, typeof(UnityEngine.Animator));
+                    
+                        int gen_ret = ETCold.LoadHelper.GetAnimatorControllerParameterLength( 
+                        _self );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
                     
                     
                     

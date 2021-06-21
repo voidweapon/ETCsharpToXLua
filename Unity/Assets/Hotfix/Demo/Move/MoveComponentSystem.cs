@@ -113,7 +113,6 @@ namespace ET
             
             long timeNow = TimeHelper.ClientNow();
             long moveTime = timeNow - self.StartTime;
-
             while (true)
             {
                 if (moveTime <= 0)
@@ -179,16 +178,18 @@ namespace ET
 
         private static void StartMove(this MoveComponent self)
         {
+            Log.Debug("StartMove---------------");
             Unit unit = self.GetParent<Unit>();
             
             self.BeginTime = TimeHelper.ClientNow();
             self.StartTime = self.BeginTime;
             self.SetNextTarget();
-
+          
             self.MoveTimer = TimerComponent.Instance.NewFrameTimer(() =>
                     {
                         try
                         {
+                          
                             self.MoveForward(false);
                         }
                         catch (Exception e)

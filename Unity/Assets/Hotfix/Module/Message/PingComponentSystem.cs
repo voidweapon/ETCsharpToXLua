@@ -14,28 +14,29 @@ namespace ET
         {
             Session session = self.GetParent<Session>();
             long instanceId = self.InstanceId;
-            
+           
             while (true)
             {
                 if (self.InstanceId != instanceId)
                 {
                     return;
                 }
-
-                long time1 = TimeHelper.ClientNow();
+               
                 try
                 {
-                    G2C_Ping response = await session.Call(self.C2G_Ping) as G2C_Ping;
 
-                    if (self.InstanceId != instanceId)
-                    {
-                        return;
-                    }
+                    //G2C_Ping response = await session.Call(self.C2G_Ping) as G2C_Ping;
 
-                    long time2 = TimeHelper.ClientNow();
-                    self.Ping = time2 - time1;
-                    
-                    Game.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+                    //if (self.InstanceId != instanceId)
+                    //{
+                    //    return;
+                    //}
+
+                    //long time2 = TimeHelper.ClientNow();
+                    //self.Ping = time2 - time1;
+
+                    //Game.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+                    SessionPingAsync(self).Coroutine();
 
                     await TimerComponent.Instance.WaitAsync(2000);
                 }
@@ -51,6 +52,26 @@ namespace ET
                 }
             }
         }
+
+        private static async ETVoid SessionPingAsync(PingComponent self)
+        {
+            long time1 = TimeHelper.ClientNow();
+            Session session = self.GetParent<Session>();
+            long instanceId = self.InstanceId;
+
+            G2C_Ping response = await session.Call(self.C2G_Ping) as G2C_Ping;
+
+            if (self.InstanceId != instanceId)
+            {
+                return;
+            }
+
+            long time2 = TimeHelper.ClientNow();
+            self.Ping = time2 - time1;
+
+            Game.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+        }
+
     }
 
     [ObjectSystem]

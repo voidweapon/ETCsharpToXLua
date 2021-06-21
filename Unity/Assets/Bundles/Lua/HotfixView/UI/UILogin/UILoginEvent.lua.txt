@@ -7,13 +7,18 @@ System.namespace("ET", function (namespace)
     local OnCreate, OnRemove
     OnCreate = function (this, uiComponent)
       return System.async(function (async, this, uiComponent)
-        async:Await(ET.ResourcesComponent.Instance:LoadBundleAsync(ET.AssetBundleHelper.StringToAB("UILogin" --[[UIType.UILogin]])))
-        local bundleGameObject = System.cast(UnityEngine.GameObject, ET.ResourcesComponent.Instance:GetAsset(ET.AssetBundleHelper.StringToAB("UILogin" --[[UIType.UILogin]]), "UILogin" --[[UIType.UILogin]]))
-        local gameObject = UnityEngine.Object.Instantiate(bundleGameObject, UnityEngine.GameObject)
+        async:Await(ET.ETTask.getCompletedTask())
+
+        ET.ResourcesComponent.Instance:LoadBundle(ET.AssetBundleHelper.StringToAB("UILogin" --[[UIType.UILogin]]))
+
+        local bundleGameObject = ET.ResourcesComponent.Instance:GetAsset(ET.AssetBundleHelper.StringToAB("UILogin" --[[UIType.UILogin]]), "UILogin" --[[UIType.UILogin]])
+
+        local gameObject = System.as(UnityEngine.Object.Instantiate(bundleGameObject), UnityEngine.GameObject)
 
         local ui = ET.EntityFactory.CreateWithParent2(uiComponent, "UILogin" --[[UIType.UILogin]], gameObject, false, ET.UI, System.String, UnityEngine.GameObject)
 
         ui:AddComponent2(ET.UILoginComponent)
+
         return ui
       end, nil, this, uiComponent)
     end

@@ -3,6 +3,10 @@ local System = System
 local ET = ET
 local UnityEngine = UnityEngine
 local UnityEngineUI = UnityEngine.UI
+local ET
+System.import(function (out)
+  ET = out.ET
+end)
 System.namespace("ET", function (namespace)
   namespace.class("UILobbyComponentAwakeSystem", function (namespace)
     local Awake
@@ -12,7 +16,7 @@ System.namespace("ET", function (namespace)
       self.enterMap = System.cast(UnityEngine.GameObject, rc:GetObject("EnterMap"))
       local enterMapButton = (System.as(self.enterMap:GetComponent(System.typeof(UnityEngineUI.Button)), UnityEngineUI.Button))
       enterMapButton:getonClick():AddListener(function ()
-        --[[self.EnterMap();]]
+        ET.UILobbyComponentSystem.EnterMap(self)
       end)
       self.text = System.as((System.as(rc:GetObject("Text"), UnityEngine.GameObject)):GetComponent(System.typeof(UnityEngineUI.Text)), UnityEngineUI.Text)
     end

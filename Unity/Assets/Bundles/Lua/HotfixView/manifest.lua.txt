@@ -39,7 +39,7 @@ return function (path)
       "ET.AnimatorComponentSystem",
       "ET.AnimatorComponentUpdateSystem",
       "ET.AppStart_Init",
-      "ET.AppStartInitFinish_RemoveLoginUI",
+      "ET.AppStartInitFinish_CreateLoginUI",
       "ET.ChangePosition_SyncGameObjectPos",
       "ET.ChangeRotation_SyncGameObjectRotation",
       "ET.EnterMapFinish_RemoveLobbyUI",

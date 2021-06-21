@@ -261,6 +261,7 @@ namespace ET
 				throw new Exception($"repeated timer < 100, timerType: time: {time}");
 			}
 #endif
+            Log.Debug("NewRepeatedTimerInner");
             long tillTime = TimeHelper.ServerNow() + time;
             TimerAction timer = EntityFactory.CreateWithParent<TimerAction, TimerClass, long, object>(this, TimerClass.RepeatedTimer, time, action, true);
             this.AddTimer(tillTime, timer);

@@ -5,7 +5,7 @@ System.import(function (out)
   ET = out.ET
 end)
 System.namespace("ET", function (namespace)
-  namespace.class("AppStartInitFinish_RemoveLoginUI", function (namespace)
+  namespace.class("AppStartInitFinish_CreateLoginUI", function (namespace)
     local Run
     Run = function (this, args)
       return System.async(function (async, this, args)

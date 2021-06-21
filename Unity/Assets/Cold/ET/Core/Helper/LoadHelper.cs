@@ -67,6 +67,18 @@ namespace ETCold
         {
             return  AssetDatabase.GetAssetBundleDependencies(assetBundleName, recursive);
         }
-        
+
+
+        public static int GetanimationClipsLength(this Animator self )
+        {
+            return self.runtimeAnimatorController.animationClips.Length;
+        }
+
+        public static int GetAnimatorControllerParameterLength(this Animator self )
+        {
+            return self.parameters.Length;
+        }
+
+
     }
 }

@@ -10,10 +10,11 @@ namespace ET
 	{
 		public override void Awake(UILoginComponent self)
 		{
-			ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
-			self.loginBtn = rc.Get<GameObject>("LoginBtn");
-			self.loginBtn.GetComponent<Button>().onClick.AddListener(self.OnLogin);
-			self.account = rc.Get<GameObject>("Account");
+			Log.Debug("uiloginComponent awake");
+			ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent(typeof(ReferenceCollector)) as ReferenceCollector;
+			self.loginBtn = rc.GetObject("LoginBtn") as GameObject;
+			(self.loginBtn.GetComponent(typeof(Button)) as Button).onClick.AddListener(()=> { self.OnLogin(); });
+			self.account = rc.GetObject("Account") as GameObject;
 		}
 	}
 	
@@ -21,7 +22,7 @@ namespace ET
 	{
 		public static void OnLogin(this UILoginComponent self)
 		{
-			LoginHelper.Login(self.DomainScene(), "127.0.0.1:10002", self.account.GetComponent<InputField>().text).Coroutine();
+			LoginHelper.Login(self.DomainScene(), "127.0.0.1:10002", (self.account.GetComponent(typeof(InputField)) as InputField).text).Coroutine();
 		}
 	}
 }

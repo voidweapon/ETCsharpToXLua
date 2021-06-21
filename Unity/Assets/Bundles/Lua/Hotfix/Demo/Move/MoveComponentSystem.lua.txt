@@ -140,7 +140,6 @@ System.namespace("ET", function (namespace)
 
       local timeNow = ET.TimeHelper.ClientNow()
       local moveTime = timeNow - self.StartTime
-
       while true do
         if moveTime <= 0 then
           return
@@ -197,6 +196,7 @@ System.namespace("ET", function (namespace)
       end
     end
     StartMove = function (self)
+      ET.Log.Debug("StartMove---------------")
       local unit = self:GetParent(ET.Unit)
 
       self.BeginTime = ET.TimeHelper.ClientNow()

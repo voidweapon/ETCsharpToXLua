@@ -10,6 +10,7 @@ System.namespace("ET", function (namespace)
         if gameObjectComponent == nil then
           return
         end
+
         local transform = gameObjectComponent.GameObject:gettransform()
         transform:setposition(args.Unit:getPosition())
         async:Await(ET.ETTask.getCompletedTask())

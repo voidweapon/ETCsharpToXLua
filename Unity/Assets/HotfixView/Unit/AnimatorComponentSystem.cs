@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ETCold;
+using System;
 using UnityEngine;
 
 namespace ET
@@ -33,7 +34,7 @@ namespace ET
 	{
 		public static void Awake(this AnimatorComponent self)
 		{
-			Animator animator = self.Parent.GetComponent<GameObjectComponent>().GameObject.GetComponent<Animator>();
+			Animator animator = self.Parent.GetComponent<GameObjectComponent>().GameObject.GetComponent(typeof(Animator)) as Animator;
 
 			if (animator == null)
 			{
@@ -50,14 +51,26 @@ namespace ET
 				return;
 			}
 			self.Animator = animator;
-			foreach (AnimationClip animationClip in animator.runtimeAnimatorController.animationClips)
-			{
+
+			int count = animator.GetanimationClipsLength();
+			Array animationClipArray = animator.runtimeAnimatorController.animationClips;   // animator.runtimeAnimatorController.animationClips;
+
+			for (int i = 0; i < count; ++i)
+            {
+				AnimationClip animationClip = (AnimationClip)animationClipArray.GetValue(i);
 				self.animationClips[animationClip.name] = animationClip;
+
 			}
-			foreach (AnimatorControllerParameter animatorControllerParameter in animator.parameters)
-			{
+
+			count = animator.GetAnimatorControllerParameterLength();
+			Array parametersArray = animator.parameters;
+
+			for (int i = 0; i < count; ++i)
+            {
+				AnimatorControllerParameter animatorControllerParameter = (AnimatorControllerParameter)parametersArray.GetValue(i);
 				self.Parameter.Add(animatorControllerParameter.name);
 			}
+
 		}
 
 		public static void Update(this AnimatorComponent self)

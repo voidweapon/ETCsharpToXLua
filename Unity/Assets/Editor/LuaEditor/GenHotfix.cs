@@ -14,7 +14,11 @@ namespace ETEditor
         public  static void Geanerate()
         {
             Log.Debug("=========开始转换C#为lua，请耐心等待=========");
- 
+
+            FileHelper.CleanDirectory("Assets/Bundles/Lua/Hotfix");
+            FileHelper.CleanDirectory("Assets/Bundles/Lua/HotfixView");
+            FileHelper.CleanDirectory("Assets/Bundles/Lua/Model");
+            FileHelper.CleanDirectory("Assets/Bundles/Lua/ModelView");
             FileHelper.CleanDirectory("Assets/Res/Code");
             GenModel.Gen();
             GenHotfixView.Gen();

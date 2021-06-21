@@ -303,6 +303,7 @@ System.namespace("ET", function (namespace)
     -- 创建一个RepeatedTimer
     -- </summary>
     NewRepeatedTimerInner = function (this, time, action)
+      ET.Log.Debug("NewRepeatedTimerInner")
       local tillTime = ET.TimeHelper.ServerNow() + time
       local timer = ET.EntityFactory.CreateWithParent3(this, ET.TimerClass.RepeatedTimer, time, action, true, ET.TimerAction, ET.TimerClass, System.Int64, System.Object)
       AddTimer(this, tillTime, timer)

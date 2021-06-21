@@ -5,7 +5,7 @@
 		protected override async ETTask Run(EventType.EnterMapFinish args)
 		{
 			// 加载场景资源
-			await ResourcesComponent.Instance.LoadBundleAsync("map.unity3d");
+			ResourcesComponent.Instance.LoadBundle("map.unity3d");
 			// 切换到map场景
 			using (SceneChangeComponent sceneChangeComponent = Game.Scene.AddComponent<SceneChangeComponent>())
 			{

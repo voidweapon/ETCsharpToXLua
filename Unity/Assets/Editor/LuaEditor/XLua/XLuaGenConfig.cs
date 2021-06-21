@@ -194,7 +194,9 @@ public static class XLuaGenConfig
         typeof(LoadHelper),
         typeof(ReferenceCollector),
         typeof(Button),
-        typeof(Text)
+        typeof(Text),
+        typeof(InputField)
+        
         };
        
         return list;
@@ -248,7 +250,7 @@ public static class XLuaGenConfig
                 internalBlackList.Add(new List<string>() { "UnityEngine.Light", "shadowAngle" });
                 internalBlackList.Add(new List<string>() { "UnityEngine.WWW", "MovieTexture" });
                 internalBlackList.Add(new List<string>() { "UnityEngine.WWW", "GetMovieTexture" });
-                internalBlackList.Add(new List<string>() { "UnityEngine.AnimatorControllerParameter", "name" });
+                /*internalBlackList.Add(new List<string>() { "UnityEngine.AnimatorControllerParameter", "name" });*/
                 internalBlackList.Add(new List<string>() { "UnityEngine.AnimatorOverrideController", "PerformOverrideClipListCleanup" });
 #if !UNITY_WEBPLAYER
                 internalBlackList.Add(new List<string>() { "UnityEngine.Application", "ExternalEval" });

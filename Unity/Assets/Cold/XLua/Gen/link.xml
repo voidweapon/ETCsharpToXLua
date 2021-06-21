@@ -143,6 +143,7 @@
 	<assembly fullname="UnityEngine.UI">
 	    <type fullname="UnityEngine.UI.Button" preserve="all"/>
 		<type fullname="UnityEngine.UI.Text" preserve="all"/>
+		<type fullname="UnityEngine.UI.InputField" preserve="all"/>
 		
 	</assembly>
 

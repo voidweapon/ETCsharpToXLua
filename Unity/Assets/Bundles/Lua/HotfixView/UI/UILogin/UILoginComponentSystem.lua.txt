@@ -3,14 +3,21 @@ local System = System
 local ET = ET
 local UnityEngine = UnityEngine
 local UnityEngineUI = UnityEngine.UI
+local ET
+System.import(function (out)
+  ET = out.ET
+end)
 System.namespace("ET", function (namespace)
   namespace.class("UILoginComponentAwakeSystem", function (namespace)
     local Awake
     Awake = function (this, self)
-      local rc = self:GetParent(ET.UI).GameObject:GetComponent(ReferenceCollector)
-      self.loginBtn = rc:Get("LoginBtn", UnityEngine.GameObject)
-      self.loginBtn:GetComponent(UnityEngineUI.Button):getonClick():AddListener(System.fn(self, self.OnLogin))
-      self.account = rc:Get("Account", UnityEngine.GameObject)
+      ET.Log.Debug("uiloginComponent awake")
+      local rc = System.as(self:GetParent(ET.UI).GameObject:GetComponent(System.typeof(ReferenceCollector)), ReferenceCollector)
+      self.loginBtn = System.as(rc:GetObject("LoginBtn"), UnityEngine.GameObject);
+      (System.as(self.loginBtn:GetComponent(System.typeof(UnityEngineUI.Button)), UnityEngineUI.Button)):getonClick():AddListener(function ()
+        ET.UILoginComponentSystem.OnLogin(self)
+      end)
+      self.account = System.as(rc:GetObject("Account"), UnityEngine.GameObject)
     end
     return {
       base = function (out)
@@ -25,7 +32,7 @@ System.namespace("ET", function (namespace)
   namespace.class("UILoginComponentSystem", function (namespace)
     local OnLogin
     OnLogin = function (self)
-      ET.LoginHelper.Login(ET.SceneHelper.DomainScene(self), "127.0.0.1:10002", self.account:GetComponent(UnityEngineUI.InputField):gettext()):Coroutine()
+      ET.LoginHelper.Login(ET.SceneHelper.DomainScene(self), "127.0.0.1:10002", (System.as(self.account:GetComponent(System.typeof(UnityEngineUI.InputField)), UnityEngineUI.InputField)):gettext()):Coroutine()
     end
     return {
       OnLogin = OnLogin

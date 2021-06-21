@@ -11,7 +11,7 @@ System.namespace("ET", function (namespace)
     Run = function (this, args)
       return System.async(function (async, this, args)
         -- 加载场景资源
-        async:Await(ET.ResourcesComponent.Instance:LoadBundleAsync("map.unity3d"))
+        ET.ResourcesComponent.Instance:LoadBundle("map.unity3d")
         -- 切换到map场景
         System.using(ET.Game.getScene():AddComponent2(ET.SceneChangeComponent), function (sceneChangeComponent)
           async:Await(ET.SceneChangeComponentSystem.ChangeSceneAsync(sceneChangeComponent, "Map"))

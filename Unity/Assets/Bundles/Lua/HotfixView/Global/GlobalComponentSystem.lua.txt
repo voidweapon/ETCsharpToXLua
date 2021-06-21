@@ -9,6 +9,8 @@ System.namespace("ET", function (namespace)
       ET.GlobalComponent.Instance = self
 
       self.Global = UnityEngine.GameObject.Find("/Global"):gettransform()
+      self.Unit = UnityEngine.GameObject.Find("/Global/Unit"):gettransform()
+      self.UI = UnityEngine.GameObject.Find("/Global/UI"):gettransform()
     end
     return {
       base = function (out)

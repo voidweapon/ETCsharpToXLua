@@ -3,7 +3,7 @@ local System = System
 local ET = ET
 System.namespace("ET", function (namespace)
   namespace.class("PingComponentAwakeSystem", function (namespace)
-    local Awake, PingAsync
+    local Awake, PingAsync, SessionPingAsync
     Awake = function (this, self)
       PingAsync(self):Coroutine()
     end
@@ -17,18 +17,19 @@ System.namespace("ET", function (namespace)
             return
           end
 
-          local time1 = ET.TimeHelper.ClientNow()
           local default, extern = System.try(function ()
-            local response = System.as(async:Await(session:Call1(self.C2G_Ping)), ET.G2C_Ping)
+            --G2C_Ping response = await session.Call(self.C2G_Ping) as G2C_Ping;
 
-            if self.InstanceId ~= instanceId then
-              return true
-            end
+            --if (self.InstanceId != instanceId)
+            --{
+            --    return;
+            --}
 
-            local time2 = ET.TimeHelper.ClientNow()
-            self.Ping = time2 - time1
+            --long time2 = TimeHelper.ClientNow();
+            --self.Ping = time2 - time1;
 
-            ET.Game.getTimeInfo().ServerMinusClientTime = response.Time + System.div((time2 - time1), 2) - time2
+            --Game.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+            SessionPingAsync(self):Coroutine()
 
             async:Await(ET.TimerComponent.Instance:WaitAsync(2000))
           end, function (default)
@@ -46,6 +47,24 @@ System.namespace("ET", function (namespace)
             return extern
           end
         end
+      end, nil, self)
+    end
+    SessionPingAsync = function (self)
+      return System.async(function (async, self)
+        local time1 = ET.TimeHelper.ClientNow()
+        local session = self:GetParent(ET.Session)
+        local instanceId = self.InstanceId
+
+        local response = System.as(async:Await(session:Call1(self.C2G_Ping)), ET.G2C_Ping)
+
+        if self.InstanceId ~= instanceId then
+          return
+        end
+
+        local time2 = ET.TimeHelper.ClientNow()
+        self.Ping = time2 - time1
+
+        ET.Game.getTimeInfo().ServerMinusClientTime = response.Time + System.div((time2 - time1), 2) - time2
       end, nil, self)
     end
     return {
