@@ -12,7 +12,6 @@ System.namespace("ET", function (namespace)
         zoneScene:AddComponent2(ET.NetKcpComponent)
         zoneScene:AddComponent2(ET.UnitComponent)
         zoneScene:AddComponent3(1, ET.AIComponent, System.Int32)
-        ET.Log.Info("Add AI Component When Create Zone Scene")
 
         -- UI层的初始化
         local default = ETEventType.AfterCreateZoneScene()

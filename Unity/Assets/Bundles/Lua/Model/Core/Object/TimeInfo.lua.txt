@@ -33,8 +33,7 @@ System.namespace("ET", function (namespace)
       return this.dt:AddTicks(timeStamp * 10000)
     end
     ClientNow = function (this)
-      local ticks = System.DateTime.getNow():getTicks()
-      return System.div((ticks - this.dt1970:getTicks()), 10000)
+      return System.div((System.DateTime.getNow():getTicks() - this.dt1970:getTicks()), 10000)
     end
     ServerNow = function (this)
       return ClientNow(this) + ET.Game.getTimeInfo().ServerMinusClientTime

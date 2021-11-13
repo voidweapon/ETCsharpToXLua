@@ -16,8 +16,6 @@ System.namespace("ET", function (namespace)
 
           local unitComponent = zoneScene:GetComponent(ET.UnitComponent)
           unitComponent.MyUnit = ET.UnitComponentSystem.Get(unitComponent, g2CEnterMap.UnitId)
-          local haveUnit = unitComponent.MyUnit == nil
-          ET.Log.Info("Enter Map: Unit == null = " .. haveUnit)
 
           local default = ETEventType.EnterMapFinish()
           default.ZoneScene = zoneScene

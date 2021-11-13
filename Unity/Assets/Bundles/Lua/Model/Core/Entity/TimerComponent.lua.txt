@@ -147,6 +147,7 @@ System.namespace("ET", function (namespace)
       end
 
       local timeNow = ET.TimeHelper.ServerNow()
+
       if timeNow < this.minTime then
         return
       end
