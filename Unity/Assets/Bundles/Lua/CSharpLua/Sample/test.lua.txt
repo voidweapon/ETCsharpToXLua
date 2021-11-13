@@ -1,18 +1,11 @@
---require('mobdebug').coro()
---require("strict")
---local socket = require("socket") 
-package.path = package.path ..";E:\\Unity\\SF\\Unity\\Assets\\Bundles\\Lua\\CSharpLua\\/?.lua.txt"
-package.cpath = package.cpath ..';C:/Users/Cal/AppData/Roaming/JetBrains/Rider2021.1/plugins/EmmyLua/classes/debugger/emmy/windows/x86/?.dll'
-
-local dbg = require('emmy_core')
-     dbg.tcpConnect('localhost', 9966)
+require("strict")
+local _, socket = pcall(require, "socket")
 
 local now = 0
 local timeoutQueue
 
 local conf = {
-  --time = socket and socket.gettime or os.time,
-  time = os.time,
+  time = socket and socket.gettime or os.time,
   setTimeout = function (f, delay)
     if not timeoutQueue then
       timeoutQueue = System.TimeoutQueue()
@@ -28,7 +21,7 @@ local function runTimeout()
   if timeoutQueue then
     while true do
       local nextExpiration = timeoutQueue:getNextExpiration()
-      if nextExpiration ~= timeoutQueue.MaxExpiration then
+      if nextExpiration then
         now = nextExpiration
         timeoutQueue:RunLoop(now)
       else
@@ -38,8 +31,7 @@ local function runTimeout()
   end
 end
 
-package.path = package.path ..";E:\\Unity\\SF\\Unity\\Assets\\Bundles\\Lua\\CSharpLua\\/?.lua.txt"
-..';C:/Users/Cal/AppData/Roaming/JetBrains/Rider2021.1/plugins/EmmyLua/classes/debugger/emmy/windows/x64/?.dll'
+package.path = package.path .. ";CSharp.lua/Coresystem.lua/?.lua"
 require("All")("", conf)
 collectgarbage("collect")
 print(collectgarbage("count"))
@@ -323,28 +315,45 @@ local function testAsync()
 	System.import(function (global)
 		Test = global.Test
 	end)
-	
-  Test={
-    Program={ 
-  Main = function ()
-    Test.TestAsync()
-  end
-    },
-    TestAsync = function()
-      local f
-      f = function (this)
-        return System.async(function (async, this)
-          local t = System.Task.Delay(2000)
-          async:await(t)
-          async:await(t)
-          print(1111)
-        end, nil, this)
-      end
-      local t = f(this)
-      --System.Console.WriteLine(("{0}, {1}"):Format(t:getStatus():EnumToString(System.TaskStatus), t:getException()))
+	System.namespace("Test", function (namespace)
+		namespace.class("TestAsync", function (namespace)
+			local f, __ctor__
+			__ctor__ = function (this)
+				local t = f(this)
+				System.Console.WriteLine(("{0}, {1}"):Format(t:getStatus():EnumToString(System.TaskStatus), t:getException()))
+			end
+			f = function (this)
+				return System.async(function (async, this)
+					local t = System.Task.Delay(2000)
+					async:await(t)
+					async:await(t)
+					System.Console.WriteLine(("Delay {0}"):Format(t:getStatus():ToEnumString(System.TaskStatus)))
+				end, nil, this)
+			end
+			return {
+				f = f,
+				__ctor__ = __ctor__
+			}
+		end)
 
-    end
-  }
+		namespace.class("Program", function (namespace)
+			local Main
+			Main = function ()
+				Test.TestAsync()
+			end
+			return {
+				Main = Main
+			}
+		end)
+	end)
+
+	System.init({
+    types = {
+      "Test.Program",
+      "Test.TestAsync"
+    },
+    Main = "Test.Program.Main"
+	})
 
 	Test.Program.Main() 
   runTimeout()
@@ -407,9 +416,9 @@ test(testNumCast, "NumCast")
 test(testSplit, "testSplit")
 test(testStringBuilder, "StringBuilder")
 test(testIO, "IO")
-test(testConsole, "Console")
-test(testAsync, "Async")
-test(testAsyncForeach, "testAsyncForeach")
+--test(testConsole, "Console")
+--test(testAsync, "Async")
+--test(testAsyncForeach, "testAsyncForeach")
 
 
 

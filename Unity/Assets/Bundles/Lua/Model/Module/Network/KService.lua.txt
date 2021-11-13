@@ -43,7 +43,7 @@ System.namespace("ET", function (namespace)
     Recv, Get1, GetByLocalConn, Get, Remove, Disconnect, Send, AddToUpdateNextTime, 
     Update, RemoveConnectTimeoutChannels, TimerOut, static, internal, __ctor1__, __ctor2__
     static = function (this)
-      logBuffer = ArrayByte:new(1024)
+      logBuffer = ArrayByte(1024)
       --Kcp.KcpSetLog(KcpLog);
       ETCold.Kcp.KcpSetoutput(KcpOutput)
     end
@@ -52,7 +52,7 @@ System.namespace("ET", function (namespace)
       this.localConnChannels = DictInt64KChannel()
       this.waitConnectChannels = DictInt64KChannel()
       this.waitRemoveChannels = ListInt64()
-      this.cache = ArrayByte:new(8192)
+      this.cache = ArrayByte(8192)
       this.ipEndPoint = SystemNet.IPEndPoint(SystemNet.IPAddress.Any, 0)
       this.random = System.Random(System.Guid.NewGuid():GetHashCode())
       this.updateChannels = HashSetInt64()
@@ -74,7 +74,7 @@ System.namespace("ET", function (namespace)
       this.socket:Bind(ipEndPoint)
       if SystemInteropServices.RuntimeInformation.IsOSPlatform(SystemInteropServices.OSPlatform.getWindows()) then
         local SIO_UDP_CONNRESET = 2550136844 --[[IOC_IN | IOC_VENDOR | 12]]
-        this.socket:IOControl(System.toInt32(SIO_UDP_CONNRESET), ArrayByte(System.Convert.ToByte(false)), nil)
+        this.socket:IOControl(System.toInt32(SIO_UDP_CONNRESET), ArrayByte { System.Convert.ToByte(false) }, nil)
       end
     end
     __ctor2__ = function (this, threadSynchronizationContext, serviceType)
@@ -89,7 +89,7 @@ System.namespace("ET", function (namespace)
 
       if SystemInteropServices.RuntimeInformation.IsOSPlatform(SystemInteropServices.OSPlatform.getWindows()) then
         local SIO_UDP_CONNRESET = 2550136844 --[[IOC_IN | IOC_VENDOR | 12]]
-        this.socket:IOControl(System.toInt32(SIO_UDP_CONNRESET), ArrayByte(System.Convert.ToByte(false)), nil)
+        this.socket:IOControl(System.toInt32(SIO_UDP_CONNRESET), ArrayByte { System.Convert.ToByte(false) }, nil)
       end
     end
     getTimeNow = function (this)
@@ -255,17 +255,17 @@ System.namespace("ET", function (namespace)
     Get1 = function (this, id)
       local channel
       local _
-      _, channel = this.idChannels:TryGetValue(id)
+      _, channel = this.idChannels:TryGetValue(id, nil)
       return channel
     end
     GetByLocalConn = function (this, localConn)
       local channel
       local _
-      _, channel = this.localConnChannels:TryGetValue(localConn)
+      _, channel = this.localConnChannels:TryGetValue(localConn, nil)
       return channel
     end
     Get = function (this, id, address)
-      local default, channel = this.idChannels:TryGetValue(id)
+      local default, channel = this.idChannels:TryGetValue(id, nil)
       if default then
         return
       end
@@ -281,14 +281,14 @@ System.namespace("ET", function (namespace)
       end)
     end
     Remove = function (this, id)
-      local default, kChannel = this.idChannels:TryGetValue(id)
+      local default, kChannel = this.idChannels:TryGetValue(id, nil)
       if not default then
         return
       end
       ET.Log.Info("kservice remove channel: " .. id .. " " .. kChannel.LocalConn .. " " .. kChannel.RemoteConn)
       this.idChannels:RemoveKey(id)
       this.localConnChannels:RemoveKey(kChannel.LocalConn)
-      local extern, waitChannel = this.waitConnectChannels:TryGetValue(kChannel.RemoteConn)
+      local extern, waitChannel = this.waitConnectChannels:TryGetValue(kChannel.RemoteConn, nil)
       if extern then
         if waitChannel.LocalConn == kChannel.LocalConn then
           this.waitConnectChannels:RemoveKey(kChannel.RemoteConn)
@@ -374,7 +374,7 @@ System.namespace("ET", function (namespace)
       for _, channelId in System.each(this.waitConnectChannels:getKeys()) do
         local continue
         repeat
-          local _, kChannel = this.waitConnectChannels:TryGetValue(channelId)
+          local _, kChannel = this.waitConnectChannels:TryGetValue(channelId, nil)
           if kChannel == nil then
             ET.Log.Error("RemoveConnectTimeoutChannels not found kchannel: " .. channelId)
             continue = true
@@ -402,7 +402,7 @@ System.namespace("ET", function (namespace)
       end
     end
     TimerOut = function (this)
-      if this.timeId:getCount() == 0 then
+      if #this.timeId == 0 then
         return
       end
 
@@ -415,7 +415,7 @@ System.namespace("ET", function (namespace)
       this.timeOutTime:Clear()
 
       for _, kv in System.each(this.timeId) do
-        local k = kv.Key
+        local k = kv[1]
         if k > timeNow then
           this.minTime = k
           break

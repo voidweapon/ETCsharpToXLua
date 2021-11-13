@@ -7,25 +7,25 @@ System.namespace("ET", function (namespace)
       local DictMN = System.Dictionary(M, N)
       TryGetDic = function (this, t, k)
         local default
-        default, k = this:TryGetValue(t)
+        default, k = this:TryGetValue(t, nil)
         return default, k
       end
       TryGetValue1 = function (this, t, m, n)
         n = System.default(N)
 
-        local default, dic = this:TryGetValue(t)
+        local default, dic = this:TryGetValue(t, nil)
         if not default then
           return false, n
         end
 
         local extern
-        extern, n = dic:TryGetValue(m)
+        extern, n = dic:TryGetValue(m, nil)
         return extern, n
       end
       Add = function (this, t, m, n)
         local kSet
         local _
-        _, kSet = this:TryGetValue(t)
+        _, kSet = this:TryGetValue(t, nil)
         if kSet == nil then
           kSet = DictMN()
           this:set(t, kSet)
@@ -34,7 +34,7 @@ System.namespace("ET", function (namespace)
         kSet:AddKeyValue(m, n)
       end
       Remove1 = function (this, t, m)
-        local _, dic = this:TryGetValue(t)
+        local _, dic = this:TryGetValue(t, nil)
         if dic == nil or not dic:RemoveKey(m) then
           return false
         end
@@ -46,7 +46,7 @@ System.namespace("ET", function (namespace)
         return true
       end
       ContainSubKey = function (this, t, m)
-        local _, dic = this:TryGetValue(t)
+        local _, dic = this:TryGetValue(t, nil)
         if dic == nil then
           return false
         end
@@ -54,7 +54,7 @@ System.namespace("ET", function (namespace)
         return dic:ContainsKey(m)
       end
       ContainValue = function (this, t, m, n)
-        local _, dic = this:TryGetValue(t)
+        local _, dic = this:TryGetValue(t, nil)
         if dic == nil then
           return false
         end

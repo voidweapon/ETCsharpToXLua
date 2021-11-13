@@ -61,7 +61,7 @@ System.namespace("ET", function (namespace)
         end
         local value
         local default
-        default, value = this.kv:TryGetValue(key)
+        default, value = this.kv:TryGetValue(key, nil)
         if not default then
           return
         end
@@ -76,7 +76,7 @@ System.namespace("ET", function (namespace)
 
         local key
         local default
-        default, key = this.vk:TryGetValue(value)
+        default, key = this.vk:TryGetValue(value, nil)
         if not default then
           return
         end

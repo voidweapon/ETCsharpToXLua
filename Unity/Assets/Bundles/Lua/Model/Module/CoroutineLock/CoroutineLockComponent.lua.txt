@@ -8,20 +8,20 @@ local QueueValueTuple
 local ETTask_1CoroutineLock
 local QueueCoroutineLockTimer
 local MultiMap_2Int64CoroutineLockTimer
-local SortedDictionary_2Int32ETTask_1CoroutineLock
-local QueueSortedDictionary_2Int32ETTask_1CoroutineLock
-local DictInt64SortedDictionary_2Int32ETTask_1CoroutineLock
-local ListDictInt64SortedDictionary_2Int32ETTask_1CoroutineLock
+local SortedDictionaryInt32ETTask_1CoroutineLock
+local QueueSortedDictionaryInt32ETTask_1CoroutineLock
+local DictInt64SortedDictionaryInt32ETTask_1CoroutineLock
+local ListDictInt64SortedDictionaryInt32ETTask_1CoroutineLock
 System.import(function (out)
   ET = out.ET
   QueueValueTuple = System.Queue(System.ValueTuple)
   ETTask_1CoroutineLock = ET.ETTask_1(ET.CoroutineLock)
   QueueCoroutineLockTimer = System.Queue(ET.CoroutineLockTimer)
   MultiMap_2Int64CoroutineLockTimer = ET.MultiMap_2(System.Int64, ET.CoroutineLockTimer)
-  SortedDictionary_2Int32ETTask_1CoroutineLock = System.SortedDictionary_2(System.Int32, ETTask_1CoroutineLock)
-  QueueSortedDictionary_2Int32ETTask_1CoroutineLock = System.Queue(SortedDictionary_2Int32ETTask_1CoroutineLock)
-  DictInt64SortedDictionary_2Int32ETTask_1CoroutineLock = System.Dictionary(System.Int64, SortedDictionary_2Int32ETTask_1CoroutineLock)
-  ListDictInt64SortedDictionary_2Int32ETTask_1CoroutineLock = System.List(DictInt64SortedDictionary_2Int32ETTask_1CoroutineLock)
+  SortedDictionaryInt32ETTask_1CoroutineLock = System.SortedDictionary(System.Int32, ETTask_1CoroutineLock)
+  QueueSortedDictionaryInt32ETTask_1CoroutineLock = System.Queue(SortedDictionaryInt32ETTask_1CoroutineLock)
+  DictInt64SortedDictionaryInt32ETTask_1CoroutineLock = System.Dictionary(System.Int64, SortedDictionaryInt32ETTask_1CoroutineLock)
+  ListDictInt64SortedDictionaryInt32ETTask_1CoroutineLock = System.List(DictInt64SortedDictionaryInt32ETTask_1CoroutineLock)
 end)
 System.namespace("ET", function (namespace)
   namespace.struct("CoroutineLockTimer", function (namespace)
@@ -81,8 +81,8 @@ System.namespace("ET", function (namespace)
     local FetchCoroutineLockQueue, RecycleCoroutineLockQueue, Awake, Update, TimeoutCheck, Dispose, Wait, GetCount, 
     Notify, class, __ctor__
     __ctor__ = function (this)
-      this.coroutineLockQueuePool = QueueSortedDictionary_2Int32ETTask_1CoroutineLock()
-      this.list = ListDictInt64SortedDictionary_2Int32ETTask_1CoroutineLock(51 --[[(int) CoroutineLockType.Max]])
+      this.coroutineLockQueuePool = QueueSortedDictionaryInt32ETTask_1CoroutineLock()
+      this.list = ListDictInt64SortedDictionaryInt32ETTask_1CoroutineLock(51 --[[(int) CoroutineLockType.Max]])
       this.nextFrameRun = QueueValueTuple()
       this.timers = MultiMap_2Int64CoroutineLockTimer()
       this.timeOutIds = QueueInt64()
@@ -91,7 +91,7 @@ System.namespace("ET", function (namespace)
     end
     FetchCoroutineLockQueue = function (this)
       if #this.coroutineLockQueuePool == 0 then
-        return SortedDictionary_2Int32ETTask_1CoroutineLock()
+        return SortedDictionaryInt32ETTask_1CoroutineLock()
       end
 
       return this.coroutineLockQueuePool:Dequeue()
@@ -102,7 +102,7 @@ System.namespace("ET", function (namespace)
     Awake = function (this)
       class.Instance = this
       for i = 0, this.list:getCapacity() - 1 do
-        this.list:Add(DictInt64SortedDictionary_2Int32ETTask_1CoroutineLock())
+        this.list:Add(DictInt64SortedDictionaryInt32ETTask_1CoroutineLock())
       end
     end
     Update = function (this)
@@ -117,7 +117,7 @@ System.namespace("ET", function (namespace)
     end
     TimeoutCheck = function (this)
       -- 超时的锁
-      if this.timers:getCount() == 0 then
+      if #this.timers == 0 then
         return
       end
 
@@ -128,7 +128,7 @@ System.namespace("ET", function (namespace)
       end
 
       for _, kv in System.each(this.timers) do
-        local k = kv.Key
+        local k = kv[1]
         if k > timeNow then
           this.minTime = k
           break
@@ -153,12 +153,12 @@ System.namespace("ET", function (namespace)
           local coroutineLockTimer = this.timerOutTimer:Dequeue()
 
           local coroutineLockQueueType = this.list:get(System.Convert.ToInt32(coroutineLockTimer.CoroutineLockType))
-          local default, queue = coroutineLockQueueType:TryGetValue(coroutineLockTimer.Key)
+          local default, queue = coroutineLockQueueType:TryGetValue(coroutineLockTimer.Key, nil)
           if not default then
             continue = true
             break
           end
-          local extern, tcs = queue:TryGetValue(coroutineLockTimer.N)
+          local extern, tcs = queue:TryGetValue(coroutineLockTimer.N, nil)
           if not extern then
             continue = true
             break
@@ -166,7 +166,7 @@ System.namespace("ET", function (namespace)
 
           queue:RemoveKey(coroutineLockTimer.N)
 
-          if queue:getCount() == 0 then
+          if #queue == 0 then
             RecycleCoroutineLockQueue(this, queue)
             coroutineLockQueueType:RemoveKey(coroutineLockTimer.Key)
           end
@@ -194,7 +194,7 @@ System.namespace("ET", function (namespace)
     Wait = function (this, coroutineLockType, key, time)
       return System.async(function (async, this, coroutineLockType, key, time)
         local coroutineLockQueueType = this.list:get(System.Convert.ToInt32(coroutineLockType))
-        local default, queue = coroutineLockQueueType:TryGetValue(key)
+        local default, queue = coroutineLockQueueType:TryGetValue(key, nil)
         if not default then
           coroutineLockQueueType:AddKeyValue(key, FetchCoroutineLockQueue(this))
 
@@ -220,26 +220,26 @@ System.namespace("ET", function (namespace)
     end
     GetCount = function (this, coroutineLockType, key)
       local coroutineLockQueueType = this.list:get(System.Convert.ToInt32(coroutineLockType))
-      local default, queue = coroutineLockQueueType:TryGetValue(key)
+      local default, queue = coroutineLockQueueType:TryGetValue(key, nil)
       if not default then
         return 0
       end
 
-      return queue:getCount()
+      return #queue
     end
     Notify = function (this, coroutineLockType, key, index)
       if #this.list == 0 then
         return
       end
       local coroutineLockQueueType = this.list:get(System.Convert.ToInt32(coroutineLockType))
-      local default, queue = coroutineLockQueueType:TryGetValue(key)
+      local default, queue = coroutineLockQueueType:TryGetValue(key, nil)
       if not default then
         return
         -- coroutineLockQueueType是空的也正常，因为有些协程锁可能超时删除了
         --throw new Exception($"first work notify not find queue");
       end
 
-      if queue:getCount() == 0 then
+      if #queue == 0 then
         RecycleCoroutineLockQueue(this, queue)
         coroutineLockQueueType:RemoveKey(key)
         return
@@ -253,8 +253,8 @@ System.namespace("ET", function (namespace)
       end
 
       local kv = Linq.First(queue)
-      local tcs = kv.Value
-      queue:RemoveKey(kv.Key)
+      local tcs = kv[2]
+      queue:RemoveKey(kv[1])
       tcs:SetResult(ET.CoroutineLock(this, coroutineLockType, key, System.toInt16(index + 1)))
     end
     class = {

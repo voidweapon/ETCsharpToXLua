@@ -7,15 +7,15 @@ System.namespace("ET", function (namespace)
       local Add, Remove, GetAll, get1, GetOne, Contains, __ctor__
       local ArrayK = System.Array(K)
       local HashSetK = System.HashSet(K)
-      local SortedDictionary_2THashSetK = System.SortedDictionary_2(T, HashSetK)
+      local SortedDictionaryTHashSetK = System.SortedDictionary(T, HashSetK)
       __ctor__ = function (this)
         this.Empty = HashSetK()
-        SortedDictionary_2THashSetK.__ctor__(this)
+        SortedDictionaryTHashSetK.__ctor__(this)
       end
       Add = function (this, t, k)
         local list
         local _
-        _, list = this:TryGetValue(t)
+        _, list = this:TryGetValue(t, nil)
         if list == nil then
           list = HashSetK()
           this:AddKeyValue(t, list)
@@ -25,7 +25,7 @@ System.namespace("ET", function (namespace)
       Remove = function (this, t, k)
         local list
         local _
-        _, list = this:TryGetValue(t)
+        _, list = this:TryGetValue(t, nil)
         if list == nil then
           return false
         end
@@ -45,20 +45,20 @@ System.namespace("ET", function (namespace)
       GetAll = function (this, t)
         local list
         local _
-        _, list = this:TryGetValue(t)
+        _, list = this:TryGetValue(t, nil)
         if list == nil then
-          return ArrayK:new(0)
+          return ArrayK(0)
         end
         return Linq.ToArray(list)
       end
       get1 = function (this, t)
-        local _, list = this:TryGetValue(t)
+        local _, list = this:TryGetValue(t, nil)
         return list or this.Empty
       end
       GetOne = function (this, t)
         local list
         local _
-        _, list = this:TryGetValue(t)
+        _, list = this:TryGetValue(t, nil)
         if list ~= nil and list:getCount() > 0 then
           return Linq.FirstOrDefault(list)
         end
@@ -67,7 +67,7 @@ System.namespace("ET", function (namespace)
       Contains = function (this, t, k)
         local list
         local _
-        _, list = this:TryGetValue(t)
+        _, list = this:TryGetValue(t, nil)
         if list == nil then
           return false
         end
@@ -76,7 +76,7 @@ System.namespace("ET", function (namespace)
       return {
         base = function (out)
           return {
-            System.SortedDictionary_2(T, System.HashSet(K))
+            System.SortedDictionary(T, System.HashSet(K))
           }
         end,
         Add = Add,

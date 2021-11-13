@@ -20,7 +20,7 @@ System.namespace("ET", function (namespace)
       Add = function (this, t, k)
         local list
         local _
-        _, list = this.dictionary:TryGetValue(t)
+        _, list = this.dictionary:TryGetValue(t, nil)
         if list == nil then
           list = FetchList(this)
           this.dictionary:set(t, list)
@@ -52,7 +52,7 @@ System.namespace("ET", function (namespace)
       Remove = function (this, t, k)
         local list
         local _
-        _, list = this.dictionary:TryGetValue(t)
+        _, list = this.dictionary:TryGetValue(t, nil)
         if list == nil then
           return false
         end
@@ -68,7 +68,7 @@ System.namespace("ET", function (namespace)
       Remove1 = function (this, t)
         local list = nil
         local _
-        _, list = this.dictionary:TryGetValue(t)
+        _, list = this.dictionary:TryGetValue(t, nil)
         if list ~= nil then
           RecycleList(this, list)
         end
@@ -82,22 +82,22 @@ System.namespace("ET", function (namespace)
       GetAll = function (this, t)
         local list
         local _
-        _, list = this.dictionary:TryGetValue(t)
+        _, list = this.dictionary:TryGetValue(t, nil)
         if list == nil then
-          return ArrayK:new(0)
+          return ArrayK(0)
         end
         return list:ToArray()
       end
       get = function (this, t)
         local list
         local _
-        _, list = this.dictionary:TryGetValue(t)
+        _, list = this.dictionary:TryGetValue(t, nil)
         return list
       end
       GetOne = function (this, t)
         local list
         local _
-        _, list = this.dictionary:TryGetValue(t)
+        _, list = this.dictionary:TryGetValue(t, nil)
         if list ~= nil and #list > 0 then
           return list:get(0)
         end
@@ -106,7 +106,7 @@ System.namespace("ET", function (namespace)
       Contains = function (this, t, k)
         local list
         local _
-        _, list = this.dictionary:TryGetValue(t)
+        _, list = this.dictionary:TryGetValue(t, nil)
         if list == nil then
           return false
         end
@@ -117,7 +117,7 @@ System.namespace("ET", function (namespace)
       end
       Clear = function (this)
         for _, keyValuePair in System.each(this.dictionary) do
-          RecycleList(this, keyValuePair.Value)
+          RecycleList(this, keyValuePair[2])
         end
         this.dictionary:Clear()
       end

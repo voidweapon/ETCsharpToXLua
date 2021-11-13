@@ -127,7 +127,7 @@ System.namespace("ET", function (namespace)
     IntToString = function (value)
       local result
       local default
-      default, result = ET.ResourcesComponent.Instance.IntToStringDict:TryGetValue(value)
+      default, result = ET.ResourcesComponent.Instance.IntToStringDict:TryGetValue(value, nil)
       if default then
         return result
       end
@@ -139,7 +139,7 @@ System.namespace("ET", function (namespace)
     StringToAB = function (value)
       local result
       local default
-      default, result = ET.ResourcesComponent.Instance.StringToABDict:TryGetValue(value)
+      default, result = ET.ResourcesComponent.Instance.StringToABDict:TryGetValue(value, nil)
       if default then
         return result
       end
@@ -154,7 +154,7 @@ System.namespace("ET", function (namespace)
     BundleNameToLower = function (value)
       local result
       local default
-      default, result = ET.ResourcesComponent.Instance.BundleNameToLowerDict:TryGetValue(value)
+      default, result = ET.ResourcesComponent.Instance.BundleNameToLowerDict:TryGetValue(value, nil)
       if default then
         return result
       end
@@ -226,7 +226,7 @@ System.namespace("ET", function (namespace)
       class.Instance = nil
 
       for _, abInfo in System.each(this.bundles) do
-        abInfo.Value:Destroy(true)
+        abInfo[2]:Destroy(true)
       end
 
       this.bundles:Clear()
@@ -236,10 +236,10 @@ System.namespace("ET", function (namespace)
       this.BundleNameToLowerDict:Clear()
     end
     GetDependencies = function (this, assetBundleName)
-      local dependencies = ArrayString:new(0)
+      local dependencies = ArrayString(0)
 
       local default
-      default, dependencies = this.DependenciesCache:TryGetValue(assetBundleName)
+      default, dependencies = this.DependenciesCache:TryGetValue(assetBundleName, nil)
       if default then
         return dependencies
       end
@@ -339,14 +339,14 @@ System.namespace("ET", function (namespace)
     GetAsset = function (this, bundleName, prefab)
       local dict
       local default
-      default, dict = this.resourceCache:TryGetValue(ET.AssetBundleHelper.BundleNameToLower(bundleName))
+      default, dict = this.resourceCache:TryGetValue(ET.AssetBundleHelper.BundleNameToLower(bundleName), nil)
       if not default then
         System.throw(System.Exception("not found asset: " .. bundleName .. " " .. prefab))
       end
 
       local resource = nil
       local extern
-      extern, resource = dict:TryGetValue(prefab)
+      extern, resource = dict:TryGetValue(prefab, nil)
       if not extern then
         System.throw(System.Exception("not found asset: " .. bundleName .. " " .. prefab))
       end
@@ -385,7 +385,7 @@ System.namespace("ET", function (namespace)
 
       local abInfo
       local default
-      default, abInfo = this.bundles:TryGetValue(assetBundleName)
+      default, abInfo = this.bundles:TryGetValue(assetBundleName, nil)
       if not default then
         return
       end
@@ -434,7 +434,7 @@ System.namespace("ET", function (namespace)
     AddResource = function (this, bundleName, assetName, resource)
       local dict
       local default
-      default, dict = this.resourceCache:TryGetValue(ET.AssetBundleHelper.BundleNameToLower(bundleName))
+      default, dict = this.resourceCache:TryGetValue(ET.AssetBundleHelper.BundleNameToLower(bundleName), nil)
       if not default then
         dict = DictStringObject()
         this.resourceCache:set(bundleName, dict)
@@ -446,7 +446,7 @@ System.namespace("ET", function (namespace)
       assetBundleName = ET.AssetBundleHelper.BundleNameToLower(assetBundleName)
       local abInfo
       local default
-      default, abInfo = this.bundles:TryGetValue(assetBundleName)
+      default, abInfo = this.bundles:TryGetValue(assetBundleName, nil)
       if default then
         local extern = abInfo
         extern.RefCount = extern.RefCount + 1
@@ -561,7 +561,7 @@ System.namespace("ET", function (namespace)
         assetBundleName = ET.AssetBundleHelper.BundleNameToLower(assetBundleName)
         local abInfo
         local default
-        default, abInfo = this.bundles:TryGetValue(assetBundleName)
+        default, abInfo = this.bundles:TryGetValue(assetBundleName, nil)
         if default then
           local extern = abInfo
           extern.RefCount = extern.RefCount + 1

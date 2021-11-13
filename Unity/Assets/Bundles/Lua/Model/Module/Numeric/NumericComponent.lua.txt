@@ -91,7 +91,7 @@ System.namespace("ET", function (namespace)
     GetByKey = function (this, key)
       local value = 0
       local _
-      _, value = this.NumericDic:TryGetValue(key)
+      _, value = this.NumericDic:TryGetValue(key, nil)
       return value
     end
     Update = function (this, numericType)

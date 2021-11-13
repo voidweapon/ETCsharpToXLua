@@ -15,7 +15,7 @@ System.namespace("ET", function (namespace)
       get = function (this, t)
         local set
         local default
-        default, set = this.dictionary:TryGetValue(t)
+        default, set = this.dictionary:TryGetValue(t, nil)
         if not default then
           set = HashSetK()
         end
@@ -27,7 +27,7 @@ System.namespace("ET", function (namespace)
       Add = function (this, t, k)
         local set
         local _
-        _, set = this.dictionary:TryGetValue(t)
+        _, set = this.dictionary:TryGetValue(t, nil)
         if set == nil then
           set = FetchList(this)
           this.dictionary:set(t, set)
@@ -37,7 +37,7 @@ System.namespace("ET", function (namespace)
       Remove = function (this, t, k)
         local set
         local _
-        _, set = this.dictionary:TryGetValue(t)
+        _, set = this.dictionary:TryGetValue(t, nil)
         if set == nil then
           return false
         end
@@ -53,7 +53,7 @@ System.namespace("ET", function (namespace)
       Remove1 = function (this, t)
         local set = nil
         local _
-        _, set = this.dictionary:TryGetValue(t)
+        _, set = this.dictionary:TryGetValue(t, nil)
         if set ~= nil then
           RecycleList(this, set)
         end
@@ -78,7 +78,7 @@ System.namespace("ET", function (namespace)
       Contains = function (this, t, k)
         local set
         local _
-        _, set = this.dictionary:TryGetValue(t)
+        _, set = this.dictionary:TryGetValue(t, nil)
         if set == nil then
           return false
         end
@@ -93,7 +93,7 @@ System.namespace("ET", function (namespace)
       getCount = function (this)
         local count = 0
         for _, kv in System.each(this.dictionary) do
-          count = count + kv.Value:getCount()
+          count = count + kv[2]:getCount()
         end
         return count
       end

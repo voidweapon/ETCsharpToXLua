@@ -45,7 +45,7 @@ System.namespace("ET", function (namespace)
         return nil
       end
 
-      local default, entity = this:getChildren():TryGetValue(id)
+      local default, entity = this:getChildren():TryGetValue(id, nil)
       if not default then
         return nil
       end

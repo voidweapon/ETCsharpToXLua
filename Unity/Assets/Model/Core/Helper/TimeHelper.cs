@@ -15,7 +15,11 @@ namespace ET
         /// <returns></returns>
         public static long ClientNow()
         {
+#if __CSharpLua__
+            return ETCold.LocalTimeHelper.CurrentMilliseconds();
+#else
             return Game.TimeInfo.ClientNow();
+#endif
         }
 
         public static long ClientNowSeconds()
@@ -30,17 +34,29 @@ namespace ET
 
         public static long ServerNow()
         {
-            return Game.TimeInfo.ServerNow();
+#if __CSharpLua__
+            return ETCold.LocalTimeHelper.CurrentMilliseconds();
+#else
+            return Game.TimeInfo.ServerNow(); 
+#endif
         }
 
         public static long ClientFrameTime()
         {
-            return Game.TimeInfo.ClientFrameTime();
+#if __CSharpLua__
+            return ETCold.LocalTimeHelper.CurrentMilliseconds();
+#else
+            return Game.TimeInfo.ClientFrameTime(); 
+#endif
         }
-        
+
         public static long ServerFrameTime()
         {
-            return Game.TimeInfo.ServerFrameTime();
+#if __CSharpLua__
+            return ETCold.LocalTimeHelper.CurrentMilliseconds();
+#else
+            return Game.TimeInfo.ServerFrameTime(); 
+#endif
         }
     }
 }

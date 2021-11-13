@@ -23,8 +23,8 @@ return function (path)
     types = {
       "ET.CameraComponent",
       "ET.UI",
-      "ET.AnimatorComponent",
       "ET.AUIEvent",
+      "ET.AnimatorComponent",
       "ET.CameraComponentAwakeSystem",
       "ET.CameraComponentLateUpdateSystem",
       "ET.GameObjectComponent",

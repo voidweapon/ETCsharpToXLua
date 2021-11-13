@@ -16,7 +16,7 @@ System.namespace("ET", function (namespace)
     Fetch = function (this, type)
       local queue
       local default
-      default, queue = this.dictionary:TryGetValue(type)
+      default, queue = this.dictionary:TryGetValue(type, nil)
       if not default then
         queue = QueueObject()
         this.dictionary:AddKeyValue(type, queue)

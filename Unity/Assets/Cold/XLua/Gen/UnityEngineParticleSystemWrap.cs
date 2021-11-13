@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UnityEngine.ParticleSystem);
-			Utils.BeginObjectRegister(type, L, translator, 0, 54, 32, 3);
+			Utils.BeginObjectRegister(type, L, translator, 0, 51, 32, 3);
 			
             			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetParticles", _m_SetParticles);
@@ -40,9 +40,6 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "IsAlive", _m_IsAlive);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Emit", _m_Emit);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "TriggerSubEmitter", _m_TriggerSubEmitter);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AllocateAxisOfRotationAttribute", _m_AllocateAxisOfRotationAttribute);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AllocateMeshIndexAttribute", _m_AllocateMeshIndexAttribute);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AllocateCustomDataAttribute", _m_AllocateCustomDataAttribute);
 						
             Utils.RegisterFunc(L, Utils.METHOD_IDX, "getisPlaying", _g_get_isPlaying);
             Utils.RegisterFunc(L, Utils.METHOD_IDX, "getisEmitting", _g_get_isEmitting);
@@ -1012,89 +1009,6 @@ namespace XLua.CSObjectWrap
                     UnityEngine.ParticleSystem.SetMaximumPreMappedBufferCounts( 
                         _vertexBuffersCount, 
                         _indexBuffersCount );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_AllocateAxisOfRotationAttribute(RealStatePtr L)
-        {
-		    try {
-			
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                UnityEngine.ParticleSystem gen_to_be_invoked = (UnityEngine.ParticleSystem)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    
-                    gen_to_be_invoked.AllocateAxisOfRotationAttribute(  );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_AllocateMeshIndexAttribute(RealStatePtr L)
-        {
-		    try {
-			
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                UnityEngine.ParticleSystem gen_to_be_invoked = (UnityEngine.ParticleSystem)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    
-                    gen_to_be_invoked.AllocateMeshIndexAttribute(  );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_AllocateCustomDataAttribute(RealStatePtr L)
-        {
-		    try {
-			
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                UnityEngine.ParticleSystem gen_to_be_invoked = (UnityEngine.ParticleSystem)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    UnityEngine.ParticleSystemCustomData _stream;translator.Get(L, 2, out _stream);
-                    
-                    gen_to_be_invoked.AllocateCustomDataAttribute( 
-                        _stream );
                     
                     
                     

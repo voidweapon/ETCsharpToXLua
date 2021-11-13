@@ -34,7 +34,7 @@ System.namespace("ET", function (namespace)
     internal = function (this)
       this.kcp = System.default(System.IntPtr)
       this.sendBuffer = QueueKcpWaitPacket()
-      this.sendCache = ArrayByte:new(1048576 --[[1024 * 1024]])
+      this.sendCache = ArrayByte(1048576 --[[1024 * 1024]])
     end
     __ctor1__ = function (this, id, localConn, socket, remoteEndPoint, kService)
       internal(this)

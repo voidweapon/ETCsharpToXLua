@@ -32,8 +32,8 @@ System.namespace("ET", function (namespace)
         return {
           properties = {
             { "ActorId", 0x6, System.Int64, out.ProtoBuf.ProtoMemberAttribute(93) },
-            { "request", 0x6, System.String, out.ProtoBuf.ProtoMemberAttribute(1) },
-            { "RpcId", 0x106, System.Int32, getRpcId, setRpcId, out.ProtoBuf.ProtoMemberAttribute(90) }
+            { "RpcId", 0x106, System.Int32, getRpcId, setRpcId, out.ProtoBuf.ProtoMemberAttribute(90) },
+            { "request", 0x6, System.String, out.ProtoBuf.ProtoMemberAttribute(1) }
           },
           class = { 0x6, out.ET.ResponseTypeAttribute(System.typeof(ET.M2C_TestResponse)), out.ET.MessageAttribute(20001 --[[OuterOpcode.C2M_TestRequest]]), out.ProtoBuf.ProtoContractAttribute() }
         }
@@ -66,8 +66,8 @@ System.namespace("ET", function (namespace)
           properties = {
             { "Error", 0x106, System.Int32, getError, setError, out.ProtoBuf.ProtoMemberAttribute(91) },
             { "Message", 0x106, System.String, getMessage, setMessage, out.ProtoBuf.ProtoMemberAttribute(92) },
-            { "response", 0x6, System.String, out.ProtoBuf.ProtoMemberAttribute(1) },
-            { "RpcId", 0x106, System.Int32, getRpcId, setRpcId, out.ProtoBuf.ProtoMemberAttribute(90) }
+            { "RpcId", 0x106, System.Int32, getRpcId, setRpcId, out.ProtoBuf.ProtoMemberAttribute(90) },
+            { "response", 0x6, System.String, out.ProtoBuf.ProtoMemberAttribute(1) }
           },
           class = { 0x6, out.ET.MessageAttribute(20002 --[[OuterOpcode.M2C_TestResponse]]), out.ProtoBuf.ProtoContractAttribute() }
         }

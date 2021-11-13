@@ -6,7 +6,7 @@ System.namespace("ET", function (namespace)
   namespace.class("RandomEx", function (namespace)
     local RandUInt64, RandInt32, RandUInt32, RandInt64
     RandUInt64 = function (random)
-      local byte8 = ArrayByte:new(8)
+      local byte8 = ArrayByte(8)
       random:NextBytes(byte8)
       return System.BitConverter.ToUInt64(byte8, 0)
     end
@@ -17,7 +17,7 @@ System.namespace("ET", function (namespace)
       return System.toUInt32(random:Next())
     end
     RandInt64 = function (random)
-      local byte8 = ArrayByte:new(8)
+      local byte8 = ArrayByte(8)
       random:NextBytes(byte8)
       return System.BitConverter.ToInt64(byte8, 0)
     end
@@ -37,7 +37,7 @@ System.namespace("ET", function (namespace)
       this.random = System.Random()
     end
     RandUInt64 = function ()
-      local byte8 = ArrayByte:new(8)
+      local byte8 = ArrayByte(8)
       class.random:NextBytes(byte8)
       return System.BitConverter.ToUInt64(byte8, 0)
     end
@@ -48,7 +48,7 @@ System.namespace("ET", function (namespace)
       return System.toUInt32(class.random:Next())
     end
     RandInt64 = function ()
-      local byte8 = ArrayByte:new(8)
+      local byte8 = ArrayByte(8)
       class.random:NextBytes(byte8)
       return System.BitConverter.ToInt64(byte8, 0)
     end
@@ -100,7 +100,7 @@ System.namespace("ET", function (namespace)
       end
     end
     GetRandoms = function (sum, min, max)
-      local arr = ArrayInt32:new(sum)
+      local arr = ArrayInt32(sum)
       local j = 0
       --表示键和值对的集合。
       local hashtable = System.Hashtable()
@@ -111,7 +111,7 @@ System.namespace("ET", function (namespace)
         -- 是否包含特定值
         if not hashtable:ContainsValue(nValue) then
           --把键和值添加到hashtable
-          hashtable:Add(nValue, nValue)
+          hashtable:AddKeyValueObj(nValue, nValue)
           arr:set(j, nValue)
           j = j + 1
         end

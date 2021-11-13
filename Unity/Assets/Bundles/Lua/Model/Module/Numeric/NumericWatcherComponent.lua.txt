@@ -72,7 +72,7 @@ System.namespace("ET", function (namespace)
     Run = function (this, numericType, id, value)
       local list
       local default
-      default, list = this.allWatchers:TryGetValue(numericType)
+      default, list = this.allWatchers:TryGetValue(numericType, nil)
       if not default then
         return
       end
