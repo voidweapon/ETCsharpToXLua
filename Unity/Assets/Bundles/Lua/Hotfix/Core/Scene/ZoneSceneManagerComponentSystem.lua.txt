@@ -51,7 +51,7 @@ System.namespace("ET", function (namespace)
       self.ZoneScenes:AddKeyValue(zoneScene.Zone, zoneScene)
     end
     Get = function (self, zone)
-      local _, scene = self.ZoneScenes:TryGetValue(zone)
+      local _, scene = self.ZoneScenes:TryGetValue(zone, nil)
       return scene
     end
     Remove = function (self, zone)

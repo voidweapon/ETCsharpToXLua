@@ -23,7 +23,7 @@ System.namespace("ET", function (namespace)
         System.throw(System.ArgumentException(System.String.Format(SystemGlobalization.CultureInfo.getInvariantCulture(), "The binary key cannot have an odd number of digits: {0}", hexString)))
       end
 
-      local hexAsBytes = ArrayByte:new(System.div(#hexString, 2))
+      local hexAsBytes = ArrayByte(System.div(#hexString, 2))
       for index = 0, #hexAsBytes - 1 do
         local byteValue = ""
         byteValue = byteValue .. string.char(hexString:get(index * 2))

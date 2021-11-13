@@ -123,7 +123,7 @@ System.namespace("ET", function (namespace)
       return this.opcodeTypes:get(opcode)
     end
     GetResponseType = function (this, request)
-      local default, response = this.requestResponse:TryGetValue(request)
+      local default, response = this.requestResponse:TryGetValue(request, nil)
       if not default then
         System.throw(System.Exception("not found response type, request type: " .. request:GetType():getName()))
       end

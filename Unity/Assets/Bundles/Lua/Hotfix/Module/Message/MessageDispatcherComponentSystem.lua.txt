@@ -115,7 +115,7 @@ System.namespace("ET", function (namespace)
     Handle = function (self, session, opcode, message)
       local actions
       local default
-      default, actions = self.Handlers:TryGetValue(opcode)
+      default, actions = self.Handlers:TryGetValue(opcode, nil)
       if not default then
         ET.Log.Error("消息没有处理: " .. opcode .. " " .. System.toString(message))
         return

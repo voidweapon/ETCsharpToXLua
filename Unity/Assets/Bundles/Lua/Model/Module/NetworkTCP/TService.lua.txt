@@ -91,7 +91,7 @@ System.namespace("ET", function (namespace)
       return channel
     end
     Get = function (this, id, address)
-      local default, _ = this.idChannels:TryGetValue(id)
+      local default, _ = this.idChannels:TryGetValue(id, nil)
       if default then
         return
       end
@@ -100,7 +100,7 @@ System.namespace("ET", function (namespace)
     Get1 = function (this, id)
       local channel = nil
       local _
-      _, channel = this.idChannels:TryGetValue(id)
+      _, channel = this.idChannels:TryGetValue(id, nil)
       return channel
     end
     Dispose = function (this)
@@ -119,7 +119,7 @@ System.namespace("ET", function (namespace)
       this.idChannels:Clear()
     end
     Remove = function (this, id)
-      local default, channel = this.idChannels:TryGetValue(id)
+      local default, channel = this.idChannels:TryGetValue(id, nil)
       if default then
         channel:Dispose()
       end

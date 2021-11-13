@@ -21,7 +21,7 @@ System.namespace("ET", function (namespace)
       this.outArgs = SystemNetSockets.SocketAsyncEventArgs()
       this.recvBuffer = ETCold.CircularBuffer()
       this.sendBuffer = ETCold.CircularBuffer()
-      this.sendCache = ArrayByte:new(10 --[[Packet.OpcodeLength + Packet.ActorIdLength]])
+      this.sendCache = ArrayByte(10 --[[Packet.OpcodeLength + Packet.ActorIdLength]])
     end
     __ctor1__ = function (this, id, ipEndPoint, service)
       internal(this)

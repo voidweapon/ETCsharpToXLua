@@ -33,7 +33,7 @@ System.namespace("ET", function (namespace)
       end, nil, self, uiType)
     end
     Remove = function (self, uiType)
-      local default, ui = self.UIs:TryGetValue(uiType)
+      local default, ui = self.UIs:TryGetValue(uiType, nil)
       if not default then
         return
       end
@@ -46,7 +46,7 @@ System.namespace("ET", function (namespace)
     Get = function (self, name)
       local ui = nil
       local _
-      _, ui = self.UIs:TryGetValue(name)
+      _, ui = self.UIs:TryGetValue(name, nil)
       return ui
     end
     return {

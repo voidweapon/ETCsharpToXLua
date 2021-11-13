@@ -38,8 +38,8 @@ return function (path)
       "ET.AnimatorComponentDestroySystem",
       "ET.AnimatorComponentSystem",
       "ET.AnimatorComponentUpdateSystem",
-      "ET.AppStart_Init",
       "ET.AppStartInitFinish_CreateLoginUI",
+      "ET.AppStart_Init",
       "ET.ChangePosition_SyncGameObjectPos",
       "ET.ChangeRotation_SyncGameObjectRotation",
       "ET.EnterMapFinish_RemoveLobbyUI",
@@ -62,15 +62,15 @@ return function (path)
       "ET.UIEventComponentAwakeSystem",
       "ET.UIEventComponentSystem",
       "ET.UIHelper",
-      "ET.UiLoadingComponentAwakeSystem",
-      "ET.UiLoadingComponentStartSystem",
       "ET.UILoadingEvent",
       "ET.UILobbyComponentAwakeSystem",
       "ET.UILobbyComponentSystem",
       "ET.UILobbyEvent",
       "ET.UILoginComponentAwakeSystem",
       "ET.UILoginComponentSystem",
-      "ET.UILoginEvent"
+      "ET.UILoginEvent",
+      "ET.UiLoadingComponentAwakeSystem",
+      "ET.UiLoadingComponentStartSystem"
     }
   })
 end

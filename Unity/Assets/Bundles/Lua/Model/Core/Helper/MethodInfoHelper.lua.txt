@@ -6,7 +6,7 @@ System.namespace("ET", function (namespace)
     local Run
     Run = function (methodInfo, obj, param)
       if methodInfo:getIsStatic() then
-        local p = ArrayObject:new(#param + 1)
+        local p = ArrayObject(#param + 1)
         p:set(0, obj)
         for i = 0, #param - 1 do
           p:set(i + 1, param:get(i))

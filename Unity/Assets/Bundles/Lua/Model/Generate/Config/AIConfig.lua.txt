@@ -4,21 +4,21 @@ local ET = ET
 local ET
 local ListAIConfig
 local DictInt32AIConfig
-local SortedDictionary_2Int32AIConfig
-local DictInt32SortedDictionary_2Int32AIConfig
+local SortedDictionaryInt32AIConfig
+local DictInt32SortedDictionaryInt32AIConfig
 System.import(function (out)
   ET = out.ET
   ListAIConfig = System.List(ET.AIConfig)
   DictInt32AIConfig = System.Dictionary(System.Int32, ET.AIConfig)
-  SortedDictionary_2Int32AIConfig = System.SortedDictionary_2(System.Int32, ET.AIConfig)
-  DictInt32SortedDictionary_2Int32AIConfig = System.Dictionary(System.Int32, SortedDictionary_2Int32AIConfig)
+  SortedDictionaryInt32AIConfig = System.SortedDictionary(System.Int32, ET.AIConfig)
+  DictInt32SortedDictionaryInt32AIConfig = System.Dictionary(System.Int32, SortedDictionaryInt32AIConfig)
 end)
 System.namespace("ET", function (namespace)
   namespace.class("AIConfigCategory", function (namespace)
     local GetAI, EndInit, AfterDeserialization, Get, Contain, GetAll, GetOne, class, 
     __ctor__
     __ctor__ = function (this)
-      this.AIConfigs = DictInt32SortedDictionary_2Int32AIConfig()
+      this.AIConfigs = DictInt32SortedDictionaryInt32AIConfig()
       this.dict = DictInt32AIConfig()
       this.list = ListAIConfig()
       ET.ProtoObject.__ctor__(this)
@@ -33,13 +33,13 @@ System.namespace("ET", function (namespace)
       for _, kv in System.each(GetAll(this)) do
         local aiNodeConfig
         local default
-        default, aiNodeConfig = this.AIConfigs:TryGetValue(kv.Value.AIConfigId)
+        default, aiNodeConfig = this.AIConfigs:TryGetValue(kv[2].AIConfigId, nil)
         if not default then
-          aiNodeConfig = SortedDictionary_2Int32AIConfig()
-          this.AIConfigs:AddKeyValue(kv.Value.AIConfigId, aiNodeConfig)
+          aiNodeConfig = SortedDictionaryInt32AIConfig()
+          this.AIConfigs:AddKeyValue(kv[2].AIConfigId, aiNodeConfig)
         end
 
-        aiNodeConfig:AddKeyValue(kv.Key, kv.Value)
+        aiNodeConfig:AddKeyValue(kv[1], kv[2])
       end
     end
     AfterDeserialization = function (this)
@@ -50,7 +50,7 @@ System.namespace("ET", function (namespace)
       this:EndInit()
     end
     Get = function (this, id)
-      local _, item = this.dict:TryGetValue(id)
+      local _, item = this.dict:TryGetValue(id, nil)
 
       if item == nil then
         System.throw(System.Exception("配置找不到，配置表名: " .. "AIConfig" --[[nameof (AIConfig)]] .. "，配置id: " .. id))

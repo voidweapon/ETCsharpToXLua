@@ -63,7 +63,7 @@ System.namespace("ET", function (namespace)
     Remove = function (this, name)
       local ui
       local default
-      default, ui = this.nameChildren:TryGetValue(name)
+      default, ui = this.nameChildren:TryGetValue(name, nil)
       if not default then
         return
       end
@@ -73,7 +73,7 @@ System.namespace("ET", function (namespace)
     Get = function (this, name)
       local child
       local default
-      default, child = this.nameChildren:TryGetValue(name)
+      default, child = this.nameChildren:TryGetValue(name, nil)
       if default then
         return child
       end

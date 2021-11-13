@@ -142,18 +142,17 @@ System.namespace("ET", function (namespace)
       ET.Entity.__ctor__(this)
     end
     Update = function (this)
-      if this.TimeId:getCount() == 0 then
+      if #this.TimeId == 0 then
         return
       end
 
       local timeNow = ET.TimeHelper.ServerNow()
-
       if timeNow < this.minTime then
         return
       end
 
       for _, kv in System.each(this.TimeId) do
-        local k = kv.Key
+        local k = kv[1]
         if k > timeNow then
           this.minTime = k
           break

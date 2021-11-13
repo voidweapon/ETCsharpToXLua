@@ -10,7 +10,7 @@ System.namespace("ET", function (namespace)
   namespace.class("XunLuoPathComponent", function (namespace)
     local __ctor__
     __ctor__ = function (this)
-      this.path = ArrayVector3(UnityEngine.Vector3(0, 0, 0), UnityEngine.Vector3(20, 0, 0), UnityEngine.Vector3(20, 0, 20), UnityEngine.Vector3(0, 0, 20))
+      this.path = ArrayVector3 { UnityEngine.Vector3(0, 0, 0), UnityEngine.Vector3(20, 0, 0), UnityEngine.Vector3(20, 0, 20), UnityEngine.Vector3(0, 0, 20) }
       ET.Entity.__ctor__(this)
     end
     return {

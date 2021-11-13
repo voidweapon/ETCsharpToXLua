@@ -118,7 +118,7 @@ System.namespace("ET", function (namespace)
     PlayInTime = function (self, motionType, time)
       local animationClip
       local default
-      default, animationClip = self.animationClips:TryGetValue(motionType:EnumToString(ET.MotionType))
+      default, animationClip = self.animationClips:TryGetValue(motionType:EnumToString(ET.MotionType), nil)
       if not default then
         System.throw(System.Exception("找不到该动作: " .. motionType:EnumToString(ET.MotionType)))
       end
@@ -141,7 +141,7 @@ System.namespace("ET", function (namespace)
     AnimationTime = function (self, motionType)
       local animationClip
       local default
-      default, animationClip = self.animationClips:TryGetValue(motionType:EnumToString(ET.MotionType))
+      default, animationClip = self.animationClips:TryGetValue(motionType:EnumToString(ET.MotionType), nil)
       if not default then
         System.throw(System.Exception("找不到该动作: " .. motionType:EnumToString(ET.MotionType)))
       end

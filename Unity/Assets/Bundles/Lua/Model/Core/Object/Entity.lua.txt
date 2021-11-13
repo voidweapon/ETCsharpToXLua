@@ -291,7 +291,7 @@ System.namespace("ET", function (namespace)
       -- 清理Component
       if this.components ~= nil then
         for _, kv in System.each(this.components) do
-          kv.Value:Dispose()
+          kv[2]:Dispose()
         end
 
         this.components:Clear()
@@ -399,7 +399,7 @@ System.namespace("ET", function (namespace)
       if this.children == nil then
         return nil
       end
-      local _, child = this.children:TryGetValue(id)
+      local _, child = this.children:TryGetValue(id, nil)
       return System.as(child, K)
     end
     AddComponent = function (this, component)
@@ -533,7 +533,7 @@ System.namespace("ET", function (namespace)
 
       local component
       local default
-      default, component = this.components:TryGetValue(System.typeof(K))
+      default, component = this.components:TryGetValue(System.typeof(K), nil)
       if not default then
         return nil
       end
@@ -547,7 +547,7 @@ System.namespace("ET", function (namespace)
 
       local component
       local default
-      default, component = this.components:TryGetValue(type)
+      default, component = this.components:TryGetValue(type, nil)
       if not default then
         return nil
       end

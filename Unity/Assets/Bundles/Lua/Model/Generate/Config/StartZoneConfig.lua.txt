@@ -25,7 +25,7 @@ System.namespace("ET", function (namespace)
       this:EndInit()
     end
     Get = function (this, id)
-      local _, item = this.dict:TryGetValue(id)
+      local _, item = this.dict:TryGetValue(id, nil)
 
       if item == nil then
         System.throw(System.Exception("配置找不到，配置表名: " .. "StartZoneConfig" --[[nameof (StartZoneConfig)]] .. "，配置id: " .. id))

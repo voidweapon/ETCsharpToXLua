@@ -69,7 +69,7 @@ System.namespace("ET", function (namespace)
     end
     Fetch = function (this, type)
       local obj
-      local default, queue = this.dictionary:TryGetValue(type)
+      local default, queue = this.dictionary:TryGetValue(type, nil)
       if not default then
         obj = System.cast(ET.Object, System.Activator.CreateInstance(type))
       elseif queue:getCount() == 0 then
@@ -88,7 +88,7 @@ System.namespace("ET", function (namespace)
       local type = obj:GetType()
       local queue
       local default
-      default, queue = this.dictionary:TryGetValue(type)
+      default, queue = this.dictionary:TryGetValue(type, nil)
       if not default then
         queue = ET.ComponentQueue(type:getName())
 
@@ -99,14 +99,14 @@ System.namespace("ET", function (namespace)
     end
     Clear = function (this)
       for _, kv in System.each(this.dictionary) do
-        kv.Value:Dispose()
+        kv[2]:Dispose()
       end
 
       this.dictionary:Clear()
     end
     Dispose = function (this)
       for _, kv in System.each(this.dictionary) do
-        kv.Value:Dispose()
+        kv[2]:Dispose()
       end
 
       this.dictionary:Clear()

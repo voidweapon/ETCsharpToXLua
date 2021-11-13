@@ -196,7 +196,7 @@ System.namespace("ET", function (namespace)
     Get = function (this, instanceId)
       local component = nil
       local _
-      _, component = this.allComponents:TryGetValue(instanceId)
+      _, component = this.allComponents:TryGetValue(instanceId, nil)
       return component
     end
     IsRegister = function (this, instanceId)
@@ -428,7 +428,7 @@ System.namespace("ET", function (namespace)
           local instanceId = this.loaders:Dequeue()
           local component
           local default
-          default, component = this.allComponents:TryGetValue(instanceId)
+          default, component = this.allComponents:TryGetValue(instanceId, nil)
           if not default then
             continue = true
             break
@@ -471,7 +471,7 @@ System.namespace("ET", function (namespace)
           local instanceId = this.starts:Dequeue()
           local component
           local default
-          default, component = this.allComponents:TryGetValue(instanceId)
+          default, component = this.allComponents:TryGetValue(instanceId, nil)
           if not default then
             continue = true
             break
@@ -534,7 +534,7 @@ System.namespace("ET", function (namespace)
           local instanceId = this.updates:Dequeue()
           local component
           local default
-          default, component = this.allComponents:TryGetValue(instanceId)
+          default, component = this.allComponents:TryGetValue(instanceId, nil)
           if not default then
             continue = true
             break
@@ -577,7 +577,7 @@ System.namespace("ET", function (namespace)
           local instanceId = this.lateUpdates:Dequeue()
           local component
           local default
-          default, component = this.allComponents:TryGetValue(instanceId)
+          default, component = this.allComponents:TryGetValue(instanceId, nil)
           if not default then
             continue = true
             break
@@ -617,7 +617,7 @@ System.namespace("ET", function (namespace)
       return System.async(function (async, this, a, T)
         local iEvents
         local default
-        default, iEvents = this.allEvents:TryGetValue(System.typeof(T))
+        default, iEvents = this.allEvents:TryGetValue(System.typeof(T), nil)
         if not default then
           return
         end
@@ -659,18 +659,18 @@ System.namespace("ET", function (namespace)
       local noDomain = HashSetType()
 
       for _, kv in System.each(this.allComponents) do
-        local type = kv.Value:GetType()
-        if kv.Value:getParent() == nil then
+        local type = kv[2]:GetType()
+        if kv[2]:getParent() == nil then
           noParent:Add(type)
         end
 
-        if kv.Value:getDomain() == nil then
+        if kv[2]:getDomain() == nil then
           noDomain:Add(type)
         end
 
         if typeCount:ContainsKey(type) then
           local default = typeCount
-          default:set(default:get() + 1)
+          default:set(type, default:get(type) + 1)
         else
           typeCount:set(type, 1)
         end
@@ -687,19 +687,19 @@ System.namespace("ET", function (namespace)
       end
 
       local orderByDescending = Linq.OrderByDescending(typeCount, function (s)
-        return s.Value
+        return s[2]
       end, nil, System.Int32)
 
       sb:AppendLine("Entity Count: ")
       for _, kv in System.each(orderByDescending) do
         local continue
         repeat
-          if kv.Value == 1 then
+          if kv[2] == 1 then
             continue = true
             break
           end
 
-          sb:AppendLine("\t" .. kv.Key:getName() .. ": " .. kv.Value)
+          sb:AppendLine("\t" .. kv[1]:getName() .. ": " .. kv[2])
           continue = true
         until 1
         if not continue then

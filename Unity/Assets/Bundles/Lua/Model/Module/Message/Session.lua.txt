@@ -89,7 +89,7 @@ System.namespace("ET", function (namespace)
     OnRead = function (this, opcode, response)
       ET.OpcodeHelper.LogMsg(ET.SceneHelper.DomainZone(this), opcode, response)
 
-      local default, action = this.requestCallbacks:TryGetValue(response:getRpcId())
+      local default, action = this.requestCallbacks:TryGetValue(response:getRpcId(), nil)
       if not default then
         return
       end
@@ -113,7 +113,7 @@ System.namespace("ET", function (namespace)
         Send(this, request)
 
         local function CancelAction() 
-          local default, action = this.requestCallbacks:TryGetValue(rpcId)
+          local default, action = this.requestCallbacks:TryGetValue(rpcId, nil)
           if not default then
             return
           end

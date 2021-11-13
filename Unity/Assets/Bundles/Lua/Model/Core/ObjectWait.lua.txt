@@ -172,7 +172,7 @@ System.namespace("ET", function (namespace)
     end
     Notify = function (this, obj, T)
       local type = System.typeof(T)
-      local default, tcs = this.tcss:TryGetValue(type)
+      local default, tcs = this.tcss:TryGetValue(type, nil)
       if not default then
         return
       end

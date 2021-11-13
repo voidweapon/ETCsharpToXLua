@@ -2,24 +2,15 @@ using System;
 using UnityEngine;
 
 namespace ET
-{
+{    
     [ObjectSystem]
     public class AIComponentAwakeSystem: AwakeSystem<AIComponent, int>
     {
         public override void Awake(AIComponent self, int aiConfigId)
         {
             self.AIConfigId = aiConfigId;
-            Action check = null;
-#if __CSharpLua__
-            /*
-             [[
-             check = AIComponentSystem.Check
-             ]]
-             */
-#else
-             check = self.Check;
-#endif
-            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, check);
+            Log.Info("Add AIComponent");
+            self.Timer = TimerComponent.Instance.NewRepeatedTimer(1000, self.Check);
         }
     }
 
