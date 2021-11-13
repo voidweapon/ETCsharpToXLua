@@ -273,13 +273,20 @@ local function checkTasks(...)
     elseif System.isEnumerableLike(args) then
       tasks = System.Array.toArray(args)
     end
+    if tasks ~= nil then
+      for i = 1, #tasks do
+        if tasks[i] == System.null then
+          throw(ArgumentNullException())
+        end
+      end
+    end
   end
-  if not tasks then
-    tasks = System.Array(Task)(...)
-  end
-  for i = 1, #tasks do
-    if tasks[i] == System.null then
-      throw(ArgumentNullException())
+  if tasks == nil then
+    tasks = { ... }
+    for i = 1, n do
+      if tasks[i] == nil then
+        throw(ArgumentNullException())
+      end
     end
   end
   return tasks
@@ -660,7 +667,7 @@ local OperationCanceledException = define("System.OperationCanceledException", {
 })
 
 local canceledSource
-local CancellationToken
+local CancellationToken 
 CancellationToken = defStc("System.Threading.CancellationToken", {
   __ctor__ = function (this, canceled)
     if canceled == nil then
@@ -853,8 +860,8 @@ function System.async(f, void, ...)
 end
 
 local IAsyncDisposable = System.defInf("System.IAsyncDisposable")
-local IAsyncEnumerable = System.defInf("System.Collections.Generic.IAsyncEnumerable", System.emptyFn)
-local IAsyncEnumerator = System.defInf("System.Collections.Generic.IAsyncEnumerator", System.emptyFn)
+local IAsyncEnumerable = System.defInf("System.Collections.Generic.IAsyncEnumerable", System.emptyFn, nil, 1)
+local IAsyncEnumerator = System.defInf("System.Collections.Generic.IAsyncEnumerator", System.emptyFn, nil, 1)
 
 System.IAsyncEnumerable_1 =  IAsyncEnumerable
 System.IAsyncEnumerator_1 = IAsyncEnumerator
@@ -936,7 +943,7 @@ end, {
     checkYieldAsync(a, ok, v, current)
     return t
   end
-})
+}, 1)
 
 local function yieldIAsyncEnumerable(f, T, ...)
   return setmetatable({ f = f, args = pack(...) }, YieldAsyncEnumerable(T))
